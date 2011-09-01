@@ -19,7 +19,7 @@
     <div class="container header">
       <div class="row">
         <div class="column grid_3 logo">
-          <a href="#"> 
+          <a href="<?=$config->urls->root?>"> 
             <img src="<?=$config->urls->templates?>/images/logo.png"/>
           </a>
         </div>

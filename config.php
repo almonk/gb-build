@@ -89,7 +89,7 @@ $config->uploadBadExtensions = 'php php3 phtml exe cfm shtml asp pl cgi sh vbs j
  * Under no circumstance should you leave this ON with a live site. 
  *
  */
-$config->debug = true; 
+$config->debug = false; 
 
 /**
  * advanced: turns on additional options in ProcessWire Admin that aren't applicable 
