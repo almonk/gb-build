@@ -250,4 +250,9 @@ a {
   line-height:16px;
 }
 
+.header{
+  height:128px;
+  overflow:hidden;
+}
+
 
