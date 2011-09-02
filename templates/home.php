@@ -14,7 +14,6 @@
           <?php
           $homepage = $pages->get("/"); 
           $children = $homepage->children;
-          $children->prepend($homepage); 
 
           foreach($children as $child) {
             echo "<li><h2><a href='{$child->url}'>{$child->title}</a></h2><p>{$child->summary}</p></li>";

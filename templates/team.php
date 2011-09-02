@@ -20,7 +20,13 @@
           <div class="person">
             <div class="pic">
               <a href="<?=$child->url?>">
-                <img src="http://placehold.it/137x202"/> 
+                <?
+                if (!$child->profilePic) {
+                  echo "<img src='http://placehold.it/137x202/EFEFE8/B5B8B8&text=No+image'/>";
+                }else{
+                  echo "<img src='" . $child->profilePic->size(137,202)->url . "'>"; 
+                }
+                ?>
               </a>
             </div>
             <div class="text">

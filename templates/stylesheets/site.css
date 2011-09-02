@@ -90,7 +90,7 @@ a {
     text-align: center; }
 
 .page {
-  padding-bottom: 5px; }
+  padding-bottom: 15px; }
   .page p {
     line-height: 23px;
     margin-bottom: 14px; }
@@ -126,7 +126,9 @@ a {
     margin-bottom: 5px;
     font-style: italic; }
   .page .text ul {
-    list-style: disc; }
+    list-style: disc;
+    padding-bottom: 14px; 
+  }
   .page .text ul li {
     list-style: disc;
     padding-left: 23px;
@@ -214,9 +216,11 @@ a {
   background-position: center top;
   font-size: 12px; }
   .footer .footer_nav {
-    width: 129px;
     overflow: visible;
-    float: right; }
+     }
+     .footer .footer_nav{
+       text-align:right;
+     }
     .footer .footer_nav li {
       display: inline;
       list-style-type: none;
@@ -231,7 +235,7 @@ a {
   position: absolute;
   left: 0px;
   top: 188px;
-  z-index: 9999; }
+}
 
 #contactInfo {
   margin-top: 20px; }
@@ -241,3 +245,9 @@ a {
     padding-bottom: 5px;
     display: block;
     font-style: italic; }
+
+.footer{
+  line-height:16px;
+}
+
+

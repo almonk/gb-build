@@ -1,13 +1,20 @@
 <div class="container footer">
       <div class="row">
         <div class="column grid_6">
-          &copy; 2011 Grace Blue
+          <?=$pages->get('/')->address?>
         </div>
 
         <div class="column grid_6">
           <ul class="footer_nav">
-            <li><a href="#">Page item</a></li>
-            <li><a href="#">Page item</a></li>
+            <?
+            foreach ($pages->get('/')->footerLinks as $child) {
+              echo '<li>';
+              echo '<a href="' . $child->url . '">';
+              echo $child->title;
+              echo '</a>';
+              echo '</li>';
+            }
+            ?>
           </ul>
         </div>
       </div><!-- End row -->

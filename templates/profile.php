@@ -16,7 +16,13 @@
 
     <div class="column grid_3">
       <div class="pic">
-        <img src="http://placehold.it/218x310"/> 
+        <?
+        if (!$page->profilePic) {
+          echo "<img src='http://placehold.it/218x310/EFEFE8/B5B8B8&text=No+image'/>";
+        }else{
+          echo "<img src='" . $page->profilePic->size(218,310)->url . "'>";  
+        }
+        ?>
       </div>
 
       <div id="contactInfo">
