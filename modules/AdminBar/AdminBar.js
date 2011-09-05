@@ -60,13 +60,13 @@ jQuery(document).ready(function($) {
 	
 	function slideDown(link) {
 		
-		modalHeight = $(window).height() - 40; 
+		modalHeight = $(window).height() - 28; 
 		$modal.animate({
 			height: modalHeight + 'px'
 		},
 		
 		// Animation time
-		300,
+		10,
 		
 		// After slide is done
 		function(){
@@ -84,8 +84,8 @@ jQuery(document).ready(function($) {
 		$adminbar.data('active', 'browse');
 		$modal.removeClass('loading').stop().animate({
 			height: '0px'
-		}, 300, function(){
-			$modal.addClass('loading');
+		}, 10, function(){
+      // $modal.addClass('loading');
 		});
 		document.body.style.overflow='auto';
 		

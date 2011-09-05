@@ -1,7 +1,1448 @@
-/*
- * Copyright (c) 2009 Simo Kinnunen.
+/*!
+ * Copyright (c) 2011 Simo Kinnunen.
  * Licensed under the MIT license.
  *
- * @version 1.09i
+ * @version ${Version}
  */
-var Cufon=function(){function d(a){var b=this.face=a.face,c={" ":1," ":1,"　":1};this.glyphs=a.glyphs,this.w=a.w,this.baseSize=parseInt(b["units-per-em"],10),this.family=b["font-family"].toLowerCase(),this.weight=b["font-weight"],this.style=b["font-style"]||"normal",this.viewBox=function(){var a=b.bbox.split(/\s+/),c={minX:parseInt(a[0],10),minY:parseInt(a[1],10),maxX:parseInt(a[2],10),maxY:parseInt(a[3],10)};return c.width=c.maxX-c.minX,c.height=c.maxY-c.minY,c.toString=function(){return[this.minX,this.minY,this.width,this.height].join(" ")},c}(),this.ascent=-parseInt(b.ascent,10),this.descent=-parseInt(b.descent,10),this.height=-this.ascent+this.descent,this.spacing=function(a,b,d){var e=this.glyphs,f,g,h,i=[],j=0,k=-1,l=-1,m;while(m=a[++k]){f=e[m]||this.missingGlyph;if(!f)continue;g&&(j-=h=g[m]||0,i[l]-=h),j+=i[++l]=~~(f.w||this.w)+b+(c[m]?d:0),g=f.k}return i.total=j,i}}function e(){var a={},b={oblique:"italic",italic:"oblique"};this.add=function(b){(a[b.style]||(a[b.style]={}))[b.weight]=b},this.get=function(c,d){var e=a[c]||a[b[c]]||a.normal||a.italic||a.oblique;if(!e)return null;d={normal:400,bold:700}[d]||parseInt(d,10);if(e[d])return e[d];var f={1:1,99:0}[d%100],g=[],h,i;f===undefined&&(f=d>400),d==500&&(d=400);for(var j in e){if(!o(e,j))continue;j=parseInt(j,10);if(!h||j<h)h=j;if(!i||j>i)i=j;g.push(j)}return d<h&&(d=h),d>i&&(d=i),g.sort(function(a,b){return(f?a>=d&&b>=d?a<b:a>b:a<=d&&b<=d?a>b:a<b)?-1:1}),e[g[0]]}}function f(){function b(a,b){return a.contains?a.contains(b):a.compareDocumentPosition(b)&16}function c(a){var c=a.relatedTarget;if(!c||b(this,c))return;e(this,a.type=="mouseover")}function d(a){e(this,a.type=="mouseenter")}function e(b,c){setTimeout(function(){var d=t.get(b).options;a.replace(b,c?p(d,d.hover):d,!0)},10)}this.attach=function(a){a.onmouseenter===undefined?(j(a,"mouseover",c),j(a,"mouseout",c)):(j(a,"mouseenter",d),j(a,"mouseleave",d))}}function g(){function d(a){var d=[],e;for(var f=0;e=a[f];++f)d[f]=b[c[e]];return d}var b=[],c={};this.add=function(a,d){c[a]=b.push(d)-1},this.repeat=function(){var c=arguments.length?d(arguments):b,e;for(var f=0;e=c[f++];)a.replace(e[0],e[1],!0)}}function h(){function c(a){return a.cufid||(a.cufid=++b)}var a={},b=0;this.get=function(b){var d=c(b);return a[d]||(a[d]={})}}function i(a){var b={},d={};this.extend=function(a){for(var c in a)o(a,c)&&(b[c]=a[c]);return this},this.get=function(c){return b[c]!=undefined?b[c]:a[c]},this.getSize=function(a,b){return d[a]||(d[a]=new c.Size(this.get(a),b))},this.isUsable=function(){return!!a}}function j(a,b,c){a.addEventListener?a.addEventListener(b,c,!1):a.attachEvent&&a.attachEvent("on"+b,function(){return c.call(a,window.event)})}function k(a,b){var c=t.get(a);return c.options?a:(b.hover&&b.hoverables[a.nodeName.toLowerCase()]&&u.attach(a),c.options=b,a)}function l(a){var b={};return function(c){return o(b,c)||(b[c]=a.apply(null,arguments)),b[c]}}function m(a,b){var d=c.quotedList(b.get("fontFamily").toLowerCase()),e;for(var f=0;e=d[f];++f)if(y[e])return y[e].get(b.get("fontStyle"),b.get("fontWeight"));return null}function n(a){return document.getElementsByTagName(a)}function o(a,b){return a.hasOwnProperty(b)}function p(){var a={},b,c;for(var d=0,e=arguments.length;b=arguments[d],d<e;++d)for(c in b)o(b,c)&&(a[c]=b[c]);return a}function q(a,b,d,e,f,g){var h=document.createDocumentFragment(),i;if(b==="")return h;var j=e.separate,k=b.split(A[j]),l=j=="words";l&&s&&(/^\s/.test(b)&&k.unshift(""),/\s$/.test(b)&&k.push(""));for(var m=0,n=k.length;m<n;++m)i=x[e.engine](a,l?c.textAlign(k[m],d,m,n):k[m],d,e,f,g,m<n-1),i&&h.appendChild(i);return h}function r(a,b){var d=a.nodeName.toLowerCase();if(b.ignore[d])return;var e=!b.textless[d],f=c.getStyle(k(a,b)).extend(b),g=m(a,f),h,i,j,l,n,o;if(!g)return;for(h=a.firstChild;h;h=j){i=h.nodeType,j=h.nextSibling;if(e&&i==3){l?(l.appendData(h.data),a.removeChild(h)):l=h;if(j)continue}l&&(a.replaceChild(q(g,c.whiteSpace(l.data,f,l,o),f,b,h,a),l),l=null),i==1&&(h.firstChild&&(h.nodeName.toLowerCase()=="cufon"?x[b.engine](g,null,f,b,h,a):arguments.callee(h,b)),o=h)}}var a=function(){return a.replace.apply(null,arguments)},b=a.DOM={ready:function(){var a=!1,b={loaded:1,complete:1},c=[],d=function(){if(a)return;a=!0;for(var b;b=c.shift();b());};return document.addEventListener&&(document.addEventListener("DOMContentLoaded",d,!1),window.addEventListener("pageshow",d,!1)),!window.opera&&document.readyState&&function(){b[document.readyState]?d():setTimeout(arguments.callee,10)}(),document.readyState&&document.createStyleSheet&&function(){try{document.body.doScroll("left"),d()}catch(a){setTimeout(arguments.callee,1)}}(),j(window,"load",d),function(b){arguments.length?a?b():c.push(b):d()}}(),root:function(){return document.documentElement||document.body}},c=a.CSS={Size:function(a,b){this.value=parseFloat(a),this.unit=String(a).match(/[a-z%]*$/)[0]||"px",this.convert=function(a){return a/b*this.value},this.convertFrom=function(a){return a/this.value*b},this.toString=function(){return this.value+this.unit}},addClass:function(a,b){var c=a.className;return a.className=c+(c&&" ")+b,a},color:l(function(a){var b={};return b.color=a.replace(/^rgba\((.*?),\s*([\d.]+)\)/,function(a,c,d){return b.opacity=parseFloat(d),"rgb("+c+")"}),b}),fontStretch:l(function(a){return typeof a=="number"?a:/%$/.test(a)?parseFloat(a)/100:{"ultra-condensed":.5,"extra-condensed":.625,condensed:.75,"semi-condensed":.875,"semi-expanded":1.125,expanded:1.25,"extra-expanded":1.5,"ultra-expanded":2}[a]||1}),getStyle:function(a){var b=document.defaultView;return b&&b.getComputedStyle?new i(b.getComputedStyle(a,null)):a.currentStyle?new i(a.currentStyle):new i(a.style)},gradient:l(function(a){var b={id:a,type:a.match(/^-([a-z]+)-gradient\(/)[1],stops:[]},c=a.substr(a.indexOf("(")).match(/([\d.]+=)?(#[a-f0-9]+|[a-z]+\(.*?\)|[a-z]+)/ig);for(var d=0,e=c.length,f;d<e;++d)f=c[d].split("=",2).reverse(),b.stops.push([f[1]||d/(e-1),f[0]]);return b}),quotedList:l(function(a){var b=[],c=/\s*((["'])([\s\S]*?[^\\])\2|[^,]+)\s*/g,d;while(d=c.exec(a))b.push(d[3]||d[1]);return b}),recognizesMedia:l(function(a){var b=document.createElement("style"),c,d,e;b.type="text/css",b.media=a;try{b.appendChild(document.createTextNode("/**/"))}catch(f){}return d=n("head")[0],d.insertBefore(b,d.firstChild),c=b.sheet||b.styleSheet,e=c&&!c.disabled,d.removeChild(b),e}),removeClass:function(a,b){var c=RegExp("(?:^|\\s+)"+b+"(?=\\s|$)","g");return a.className=a.className.replace(c,""),a},supports:function(a,b){var c=document.createElement("span").style;return c[a]===undefined?!1:(c[a]=b,c[a]===b)},textAlign:function(a,b,c,d){return b.get("textAlign")=="right"?c>0&&(a=" "+a):c<d-1&&(a+=" "),a},textShadow:l(function(a){if(a=="none")return null;var b=[],c={},d,e=0,f=/(#[a-f0-9]+|[a-z]+\(.*?\)|[a-z]+)|(-?[\d.]+[a-z%]*)|,/ig;while(d=f.exec(a))d[0]==","?(b.push(c),c={},e=0):d[1]?c.color=d[1]:c[["offX","offY","blur"][e++]]=d[2];return b.push(c),b}),textTransform:function(){var a={uppercase:function(a){return a.toUpperCase()},lowercase:function(a){return a.toLowerCase()},capitalize:function(a){return a.replace(/\b./g,function(a){return a.toUpperCase()})}};return function(b,c){var d=a[c.get("textTransform")];return d?d(b):b}}(),whiteSpace:function(){var a={inline:1,"inline-block":1,"run-in":1},b=/^\s+/,c=/\s+$/;return function(d,e,f,g){return g&&g.nodeName.toLowerCase()=="br"&&(d=d.replace(b,"")),a[e.get("display")]?d:(f.previousSibling||(d=d.replace(b,"")),f.nextSibling||(d=d.replace(c,"")),d)}}()};c.ready=function(){function i(a){return a.disabled||j(a.sheet,a.media||"screen")}function j(a,b){if(!c.recognizesMedia(b||"all"))return!0;if(!a||a.disabled)return!1;try{var d=a.cssRules,e;if(d)f:for(var g=0,h=d.length;e=d[g],g<h;++g)switch(e.type){case 2:break;case 3:if(!j(e.styleSheet,e.media.mediaText))return!1;break;default:break f}}catch(i){}return!0}function k(){if(document.createStyleSheet)return!0;var a,b;for(b=0;a=g[b];++b)if(a.rel.toLowerCase()=="stylesheet"&&!i(a))return!1;for(b=0;a=h[b];++b)if(!i(a))return!1;return!0}var a=!c.recognizesMedia("all"),d=!1,e=[],f=function(){a=!0;for(var b;b=e.shift();b());},g=n("link"),h=n("style");return b.ready(function(){d||(d=c.getStyle(document.body).isUsable()),a||d&&k()?f():setTimeout(arguments.callee,10)}),function(b){a?b():e.push(b)}}();var s=" ".split(/\s+/).length==0,t=new h,u=new f,v=new g,w=!1,x={},y={},z={autoDetect:!1,engine:null,forceHitArea:!1,hover:!1,hoverables:{a:!0},ignore:{applet:1,canvas:1,col:1,colgroup:1,head:1,iframe:1,map:1,optgroup:1,option:1,script:1,select:1,style:1,textarea:1,title:1,pre:1},printable:!0,selector:window.Sizzle||window.jQuery&&function(a){return jQuery(a)}||window.dojo&&dojo.query||window.Ext&&Ext.query||window.YAHOO&&YAHOO.util&&YAHOO.util.Selector&&YAHOO.util.Selector.query||window.$$&&function(a){return $$(a)}||window.$&&function(a){return $(a)}||document.querySelectorAll&&function(a){return document.querySelectorAll(a)}||n,separate:"words",textless:{dl:1,html:1,ol:1,table:1,tbody:1,thead:1,tfoot:1,tr:1,ul:1},textShadow:"none"},A={words:/\s/.test(" ")?/[^\S\u00a0]+/:/\s+/,characters:"",none:/^/};return a.now=function(){return b.ready(),a},a.refresh=function(){return v.repeat.apply(v,arguments),a},a.registerEngine=function(b,c){return c?(x[b]=c,a.set("engine",b)):a},a.registerFont=function(b){if(!b)return a;var c=new d(b),f=c.family;return y[f]||(y[f]=new e),y[f].add(c),a.set("fontFamily",'"'+f+'"')},a.replace=function(d,e,f){e=p(z,e);if(!e.engine)return a;w||(c.addClass(b.root(),"cufon-active cufon-loading"),c.ready(function(){c.addClass(c.removeClass(b.root(),"cufon-loading"),"cufon-ready")}),w=!0),e.hover&&(e.forceHitArea=!0),e.autoDetect&&delete e.fontFamily,typeof e.textShadow=="string"&&(e.textShadow=c.textShadow(e.textShadow)),typeof e.color=="string"&&/^-/.test(e.color)?e.textGradient=c.gradient(e.color):delete e.textGradient,f||v.add(d,arguments);if(d.nodeType||typeof d=="string")d=[d];return c.ready(function(){for(var b=0,c=d.length;b<c;++b){var f=d[b];typeof f=="string"?a.replace(e.selector(f),e,!0):r(f,e)}}),a},a.set=function(b,c){return z[b]=c,a},a}();Cufon.registerEngine("vml",function(){function d(a,b){return e(a,/(?:em|ex|%)$|^[a-z-]+$/i.test(b)?"1em":b)}function e(a,b){if(b==="0")return 0;if(/px$/i.test(b))return parseFloat(b);var c=a.style.left,d=a.runtimeStyle.left;a.runtimeStyle.left=a.currentStyle.left,a.style.left=b.replace("%","em");var e=a.style.pixelLeft;return a.style.left=c,a.runtimeStyle.left=d,e}function f(a,b,c,d){var f="computed"+d,g=b[f];return isNaN(g)&&(g=b.get(d),b[f]=g=g=="normal"?0:~~c.convertFrom(e(a,g))),g}function h(a){var b=a.id;if(!g[b]){var c=a.stops,d=document.createElement("cvml:fill"),e=[];d.type="gradient",d.angle=180,d.focus="0",d.method="sigma",d.color=c[0][1];for(var f=1,h=c.length-1;f<h;++f)e.push(c[f][0]*100+"% "+c[f][1]);d.colors=e.join(","),d.color2=c[h][1],g[b]=d}return g[b]}var a=document.namespaces;if(!a)return;a.add("cvml","urn:schemas-microsoft-com:vml"),a=null;var b=document.createElement("cvml:shape");b.style.behavior="url(#default#VML)";if(!b.coordsize)return;b=null;var c=(document.documentMode||0)<8;document.write(('<style type="text/css">cufoncanvas{text-indent:0;}@media screen{cvml\\:shape,cvml\\:rect,cvml\\:fill,cvml\\:shadow{behavior:url(#default#VML);display:block;antialias:true;position:absolute;}cufoncanvas{position:absolute;text-align:left;}cufon{display:inline-block;position:relative;vertical-align:'+(c?"middle":"text-bottom")+";}cufon cufontext{position:absolute;left:-10000in;font-size:1px;}a cufon{cursor:pointer}}@media print{cufon cufoncanvas{display:none;}}</style>").replace(/;/g,"!important;"));var g={};return function(a,b,g,i,j,k,l){var m=b===null;m&&(b=j.alt);var n=a.viewBox,o=g.computedFontSize||(g.computedFontSize=new Cufon.CSS.Size(d(k,g.get("fontSize"))+"px",a.baseSize)),p,q;if(m)p=j,q=j.firstChild;else{p=document.createElement("cufon"),p.className="cufon cufon-vml",p.alt=b,q=document.createElement("cufoncanvas"),p.appendChild(q);if(i.printable){var r=document.createElement("cufontext");r.appendChild(document.createTextNode(b)),p.appendChild(r)}l||p.appendChild(document.createElement("cvml:shape"))}var s=p.style,t=q.style,u=o.convert(n.height),v=Math.ceil(u),w=v/u,x=w*Cufon.CSS.fontStretch(g.get("fontStretch")),y=n.minX,z=n.minY;t.height=v,t.top=Math.round(o.convert(z-a.ascent)),t.left=Math.round(o.convert(y)),s.height=o.convert(a.height)+"px";var A=g.get("color"),B=Cufon.CSS.textTransform(b,g).split(""),C=a.spacing(B,f(k,g,o,"letterSpacing"),f(k,g,o,"wordSpacing"));if(!C.length)return null;var D=C.total,E=-y+D+(n.width-C[C.length-1]),F=o.convert(E*x),G=Math.round(F),H=E+","+n.height,I,J="r"+H+"ns",K=i.textGradient&&h(i.textGradient),L=a.glyphs,M=0,N=i.textShadow,O=-1,P=0,Q;while(Q=B[++O]){var R=L[B[O]]||a.missingGlyph,S;if(!R)continue;if(m){S=q.childNodes[P];while(S.firstChild)S.removeChild(S.firstChild)}else S=document.createElement("cvml:shape"),q.appendChild(S);S.stroked="f",S.coordsize=H,S.coordorigin=I=y-M+","+z,S.path=(R.d?"m"+R.d+"xe":"")+"m"+I+J,S.fillcolor=A,K&&S.appendChild(K.cloneNode(!1));var T=S.style;T.width=G,T.height=v;if(N){var U=N[0],V=N[1],W=Cufon.CSS.color(U.color),X,Y=document.createElement("cvml:shadow");Y.on="t",Y.color=W.color,Y.offset=U.offX+","+U.offY,V&&(X=Cufon.CSS.color(V.color),Y.type="double",Y.color2=X.color,Y.offset2=V.offX+","+V.offY),Y.opacity=W.opacity||X&&X.opacity||1,S.appendChild(Y)}M+=C[P++]}var Z=S.nextSibling,$,_;i.forceHitArea?(Z||(Z=document.createElement("cvml:rect"),Z.stroked="f",Z.className="cufon-vml-cover",$=document.createElement("cvml:fill"),$.opacity=0,Z.appendChild($),q.appendChild(Z)),_=Z.style,_.width=G,_.height=v):Z&&q.removeChild(Z),s.width=Math.max(Math.ceil(o.convert(D*x)),0);if(c){var ba=g.computedYAdjust;if(ba===undefined){var bb=g.get("lineHeight");bb=="normal"?bb="1em":isNaN(bb)||(bb+="em"),g.computedYAdjust=ba=.5*(e(k,bb)-parseFloat(s.height))}ba&&(s.marginTop=Math.ceil(ba)+"px",s.marginBottom=ba+"px")}return p}}()),Cufon.registerEngine("canvas",function(){function e(a,b){var c=0,d=0,e=[],f=/([mrvxe])([^a-z]*)/g,g;h:for(var i=0;g=f.exec(a);++i){var j=g[2].split(",");switch(g[1]){case"v":e[i]={m:"bezierCurveTo",a:[c+~~j[0],d+~~j[1],c+~~j[2],d+~~j[3],c+=~~j[4],d+=~~j[5]]};break;case"r":e[i]={m:"lineTo",a:[c+=~~j[0],d+=~~j[1]]};break;case"m":e[i]={m:"moveTo",a:[c=~~j[0],d=~~j[1]]};break;case"x":e[i]={m:"closePath"};break;case"e":break h}b[e[i].m].apply(b,e[i].a)}return e}function f(a,b){for(var c=0,d=a.length;c<d;++c){var e=a[c];b[e.m].apply(b,e.a)}}var a=document.createElement("canvas");if(!a||!a.getContext||!a.getContext.apply)return;a=null;var b=Cufon.CSS.supports("display","inline-block"),c=!b&&(document.compatMode=="BackCompat"||/frameset|transitional/i.test(document.doctype.publicId)),d=document.createElement("style");return d.type="text/css",d.appendChild(document.createTextNode(("cufon{text-indent:0;}@media screen,projection{cufon{display:inline;display:inline-block;position:relative;vertical-align:middle;"+(c?"":"font-size:1px;line-height:1px;")+"}cufon cufontext{display:-moz-inline-box;display:inline-block;width:0;height:0;overflow:hidden;text-indent:-10000in;}"+(b?"cufon canvas{position:relative;}":"cufon canvas{position:absolute;}")+"}@media print{cufon{padding:0;}cufon canvas{display:none;}}").replace(/;/g,"!important;"))),document.getElementsByTagName("head")[0].appendChild(d),function(a,c,d,g,h,i){function O(){var b=a.glyphs,c,d=-1,g=-1,h;M.scale(H,1);while(h=w[++d]){var c=b[w[d]]||a.missingGlyph;if(!c)continue;c.d&&(M.beginPath(),c.code?f(c.code,M):c.code=e("m"+c.d,M),M.fill()),M.translate(x[++g],0)}M.restore()}var j=c===null;j&&(c=h.getAttribute("alt"));var k=a.viewBox,l=d.getSize("fontSize",a.baseSize),m=0,n=0,o=0,p=0,q=g.textShadow,r=[];if(q)for(var s=q.length;s--;){var t=q[s],u=l.convertFrom(parseFloat(t.offX)),v=l.convertFrom(parseFloat(t.offY));r[s]=[u,v],v<m&&(m=v),u>n&&(n=u),v>o&&(o=v),u<p&&(p=u)}var w=Cufon.CSS.textTransform(c,d).split(""),x=a.spacing(w,~~l.convertFrom(parseFloat(d.get("letterSpacing"))||0),~~l.convertFrom(parseFloat(d.get("wordSpacing"))||0));if(!x.length)return null;var y=x.total;n+=k.width-x[x.length-1],p+=k.minX;var z,A;if(j)z=h,A=h.firstChild;else{z=document.createElement("cufon"),z.className="cufon cufon-canvas",z.setAttribute("alt",c),A=document.createElement("canvas"),z.appendChild(A);if(g.printable){var B=document.createElement("cufontext");B.appendChild(document.createTextNode(c)),z.appendChild(B)}}var C=z.style,D=A.style,E=l.convert(k.height),F=Math.ceil(E),G=F/E,H=G*Cufon.CSS.fontStretch(d.get("fontStretch")),I=y*H,J=Math.ceil(l.convert(I+n-p)),K=Math.ceil(l.convert(k.height-m+o));A.width=J,A.height=K,D.width=J+"px",D.height=K+"px",m+=k.minY,D.top=Math.round(l.convert(m-a.ascent))+"px",D.left=Math.round(l.convert(p))+"px";var L=Math.max(Math.ceil(l.convert(I)),0)+"px";b?(C.width=L,C.height=l.convert(a.height)+"px"):(C.paddingLeft=L,C.paddingBottom=l.convert(a.height)-1+"px");var M=A.getContext("2d"),N=E/k.height;M.scale(N,N*G),M.translate(-p,-m),M.save();if(q)for(var s=q.length;s--;){var t=q[s];M.save(),M.fillStyle=t.color,M.translate.apply(M,r[s]),O()}var P=g.textGradient;if(P){var Q=P.stops,R=M.createLinearGradient(0,k.minY,0,k.maxY);for(var s=0,S=Q.length;s<S;++s)R.addColorStop.apply(R,Q[s]);M.fillStyle=R}else M.fillStyle=d.get("color");return O(),z}}())
+
+var Cufon = (function() {
+
+	var api = function() {
+		return api.replace.apply(null, arguments);
+	};
+
+	var DOM = api.DOM = {
+
+		ready: (function() {
+
+			var complete = false, readyStatus = { loaded: 1, complete: 1 };
+
+			var queue = [], perform = function() {
+				if (complete) return;
+				complete = true;
+				for (var fn; fn = queue.shift(); fn());
+			};
+
+			// Gecko, Opera, WebKit r26101+
+
+			if (document.addEventListener) {
+				document.addEventListener('DOMContentLoaded', perform, false);
+				window.addEventListener('pageshow', perform, false); // For cached Gecko pages
+			}
+
+			// Old WebKit, Internet Explorer
+
+			if (!window.opera && document.readyState) (function() {
+				readyStatus[document.readyState] ? perform() : setTimeout(arguments.callee, 10);
+			})();
+
+			// Internet Explorer
+
+			if (document.readyState && document.createStyleSheet) (function() {
+				try {
+					document.body.doScroll('left');
+					perform();
+				}
+				catch (e) {
+					setTimeout(arguments.callee, 1);
+				}
+			})();
+
+			addEvent(window, 'load', perform); // Fallback
+
+			return function(listener) {
+				if (!arguments.length) perform();
+				else complete ? listener() : queue.push(listener);
+			};
+
+		})(),
+
+		root: function() {
+			return document.documentElement || document.body;
+		},
+
+		strict: (function() {
+			var doctype;
+			// no doctype (doesn't always catch it though.. IE I'm looking at you)
+			if (document.compatMode == 'BackCompat') return false;
+			// WebKit, Gecko, Opera, IE9+
+			doctype = document.doctype;
+			if (doctype) {
+				return !/frameset|transitional/i.test(doctype.publicId);
+			}
+			// IE<9, firstChild is the doctype even if there's an XML declaration
+			doctype = document.firstChild;
+			if (doctype.nodeType != 8 || /^DOCTYPE.+(transitional|frameset)/i.test(doctype.data)) {
+				return false;
+			}
+			return true;
+		})()
+
+	};
+
+	var CSS = api.CSS = {
+
+		Size: function(value, base) {
+
+			this.value = parseFloat(value);
+			this.unit = String(value).match(/[a-z%]*$/)[0] || 'px';
+
+			this.convert = function(value) {
+				return value / base * this.value;
+			};
+
+			this.convertFrom = function(value) {
+				return value / this.value * base;
+			};
+
+			this.toString = function() {
+				return this.value + this.unit;
+			};
+
+		},
+
+		addClass: function(el, className) {
+			var current = el.className;
+			el.className = current + (current && ' ') + className;
+			return el;
+		},
+
+		color: cached(function(value) {
+			var parsed = {};
+			parsed.color = value.replace(/^rgba\((.*?),\s*([\d.]+)\)/, function($0, $1, $2) {
+				parsed.opacity = parseFloat($2);
+				return 'rgb(' + $1 + ')';
+			});
+			return parsed;
+		}),
+
+		// has no direct CSS equivalent.
+		// @see http://msdn.microsoft.com/en-us/library/system.windows.fontstretches.aspx
+		fontStretch: cached(function(value) {
+			if (typeof value == 'number') return value;
+			if (/%$/.test(value)) return parseFloat(value) / 100;
+			return {
+				'ultra-condensed': 0.5,
+				'extra-condensed': 0.625,
+				condensed: 0.75,
+				'semi-condensed': 0.875,
+				'semi-expanded': 1.125,
+				expanded: 1.25,
+				'extra-expanded': 1.5,
+				'ultra-expanded': 2
+			}[value] || 1;
+		}),
+
+		getStyle: function(el) {
+			var view = document.defaultView;
+			if (view && view.getComputedStyle) return new Style(view.getComputedStyle(el, null));
+			if (el.currentStyle) return new Style(el.currentStyle);
+			return new Style(el.style);
+		},
+
+		gradient: cached(function(value) {
+			var gradient = {
+				id: value,
+				type: value.match(/^-([a-z]+)-gradient\(/)[1],
+				stops: []
+			}, colors = value.substr(value.indexOf('(')).match(/([\d.]+=)?(#[a-f0-9]+|[a-z]+\(.*?\)|[a-z]+)/ig);
+			for (var i = 0, l = colors.length, stop; i < l; ++i) {
+				stop = colors[i].split('=', 2).reverse();
+				gradient.stops.push([ stop[1] || i / (l - 1), stop[0] ]);
+			}
+			return gradient;
+		}),
+
+		quotedList: cached(function(value) {
+			// doesn't work properly with empty quoted strings (""), but
+			// it's not worth the extra code.
+			var list = [], re = /\s*((["'])([\s\S]*?[^\\])\2|[^,]+)\s*/g, match;
+			while (match = re.exec(value)) list.push(match[3] || match[1]);
+			return list;
+		}),
+
+		recognizesMedia: cached(function(media) {
+			var el = document.createElement('style'), sheet, container, supported;
+			el.type = 'text/css';
+			el.media = media;
+			try { // this is cached anyway
+				el.appendChild(document.createTextNode('/**/'));
+			} catch (e) {}
+			container = elementsByTagName('head')[0];
+			container.insertBefore(el, container.firstChild);
+			sheet = (el.sheet || el.styleSheet);
+			supported = sheet && !sheet.disabled;
+			container.removeChild(el);
+			return supported;
+		}),
+
+		removeClass: function(el, className) {
+			var re = RegExp('(?:^|\\s+)' + className +  '(?=\\s|$)', 'g');
+			el.className = el.className.replace(re, '');
+			return el;
+		},
+
+		supports: function(property, value) {
+			var checker = document.createElement('span').style;
+			if (checker[property] === undefined) return false;
+			checker[property] = value;
+			return checker[property] === value;
+		},
+
+		textAlign: function(word, style, position, wordCount) {
+			if (style.get('textAlign') == 'right') {
+				if (position > 0) word = ' ' + word;
+			}
+			else if (position < wordCount - 1) word += ' ';
+			return word;
+		},
+
+		textShadow: cached(function(value) {
+			if (value == 'none') return null;
+			var shadows = [], currentShadow = {}, result, offCount = 0;
+			var re = /(#[a-f0-9]+|[a-z]+\(.*?\)|[a-z]+)|(-?[\d.]+[a-z%]*)|,/ig;
+			while (result = re.exec(value)) {
+				if (result[0] == ',') {
+					shadows.push(currentShadow);
+					currentShadow = {};
+					offCount = 0;
+				}
+				else if (result[1]) {
+					currentShadow.color = result[1];
+				}
+				else {
+					currentShadow[[ 'offX', 'offY', 'blur' ][offCount++]] = result[2];
+				}
+			}
+			shadows.push(currentShadow);
+			return shadows;
+		}),
+
+		textTransform: (function() {
+			var map = {
+				uppercase: function(s) {
+					return s.toUpperCase();
+				},
+				lowercase: function(s) {
+					return s.toLowerCase();
+				},
+				capitalize: function(s) {
+					return s.replace(/(?:^|\s)./g, function($0) {
+						return $0.toUpperCase();
+					});
+				}
+			};
+			return function(text, style) {
+				var transform = map[style.get('textTransform')];
+				return transform ? transform(text) : text;
+			};
+		})(),
+
+		whiteSpace: (function() {
+			var ignore = {
+				inline: 1,
+				'inline-block': 1,
+				'run-in': 1
+			};
+			var wsStart = /^\s+/, wsEnd = /\s+$/;
+			return function(text, style, node, previousElement, simple) {
+				if (simple) return text.replace(wsStart, '').replace(wsEnd, ''); // @fixme too simple
+				if (previousElement) {
+					if (previousElement.nodeName.toLowerCase() == 'br') {
+						text = text.replace(wsStart, '');
+					}
+				}
+				if (ignore[style.get('display')]) return text;
+				if (!node.previousSibling) text = text.replace(wsStart, '');
+				if (!node.nextSibling) text = text.replace(wsEnd, '');
+				return text;
+			};
+		})()
+
+	};
+
+	CSS.ready = (function() {
+
+		// don't do anything in Safari 2 (it doesn't recognize any media type)
+		var complete = !CSS.recognizesMedia('all'), hasLayout = false;
+
+		var queue = [], perform = function() {
+			complete = true;
+			for (var fn; fn = queue.shift(); fn());
+		};
+
+		var links = elementsByTagName('link'), styles = elementsByTagName('style');
+
+		var checkTypes = {
+			'': 1,
+			'text/css': 1
+		};
+
+		function isContainerReady(el) {
+			if (!checkTypes[el.type.toLowerCase()]) return true;
+			return el.disabled || isSheetReady(el.sheet, el.media || 'screen');
+		}
+
+		function isSheetReady(sheet, media) {
+			// in Opera sheet.disabled is true when it's still loading,
+			// even though link.disabled is false. they stay in sync if
+			// set manually.
+			if (!CSS.recognizesMedia(media || 'all')) return true;
+			if (!sheet || sheet.disabled) return false;
+			try {
+				var rules = sheet.cssRules, rule;
+				if (rules) {
+					// needed for Safari 3 and Chrome 1.0.
+					// in standards-conforming browsers cssRules contains @-rules.
+					// Chrome 1.0 weirdness: rules[<number larger than .length - 1>]
+					// returns the last rule, so a for loop is the only option.
+					search: for (var i = 0, l = rules.length; rule = rules[i], i < l; ++i) {
+						switch (rule.type) {
+							case 2: // @charset
+								break;
+							case 3: // @import
+								if (!isSheetReady(rule.styleSheet, rule.media.mediaText)) return false;
+								break;
+							default:
+								// only @charset can precede @import
+								break search;
+						}
+					}
+				}
+			}
+			catch (e) {} // probably a style sheet from another domain
+			return true;
+		}
+
+		function allStylesLoaded() {
+			// Internet Explorer's style sheet model, there's no need to do anything
+			if (document.createStyleSheet) return true;
+			// standards-compliant browsers
+			var el, i;
+			for (i = 0; el = links[i]; ++i) {
+				if (el.rel.toLowerCase() == 'stylesheet' && !isContainerReady(el)) return false;
+			}
+			for (i = 0; el = styles[i]; ++i) {
+				if (!isContainerReady(el)) return false;
+			}
+			return true;
+		}
+
+		DOM.ready(function() {
+			// getComputedStyle returns null in Gecko if used in an iframe with display: none
+			if (!hasLayout) hasLayout = CSS.getStyle(document.body).isUsable();
+			if (complete || (hasLayout && allStylesLoaded())) perform();
+			else setTimeout(arguments.callee, 10);
+		});
+
+		return function(listener) {
+			if (complete) listener();
+			else queue.push(listener);
+		};
+
+	})();
+
+	function Font(data) {
+
+		var face = this.face = data.face, wordSeparators = {
+			'\u0020': 1,
+			'\u00a0': 1,
+			'\u3000': 1
+		};
+
+		this.glyphs = (function(glyphs) {
+			var key, fallbacks = {
+				'\u2011': '\u002d',
+				'\u00ad': '\u2011'
+			};
+			for (key in fallbacks) {
+				if (!hasOwnProperty(fallbacks, key)) continue;
+				if (!glyphs[key]) glyphs[key] = glyphs[fallbacks[key]];
+			}
+			return glyphs;
+		})(data.glyphs);
+
+		this.w = data.w;
+		this.baseSize = parseInt(face['units-per-em'], 10);
+
+		this.family = face['font-family'].toLowerCase();
+		this.weight = face['font-weight'];
+		this.style = face['font-style'] || 'normal';
+
+		this.viewBox = (function () {
+			var parts = face.bbox.split(/\s+/);
+			var box = {
+				minX: parseInt(parts[0], 10),
+				minY: parseInt(parts[1], 10),
+				maxX: parseInt(parts[2], 10),
+				maxY: parseInt(parts[3], 10)
+			};
+			box.width = box.maxX - box.minX;
+			box.height = box.maxY - box.minY;
+			box.toString = function() {
+				return [ this.minX, this.minY, this.width, this.height ].join(' ');
+			};
+			return box;
+		})();
+
+		this.ascent = -parseInt(face.ascent, 10);
+		this.descent = -parseInt(face.descent, 10);
+
+		this.height = -this.ascent + this.descent;
+
+		this.spacing = function(chars, letterSpacing, wordSpacing) {
+			var glyphs = this.glyphs, glyph,
+				kerning, k,
+				jumps = [],
+				width = 0, w,
+				i = -1, j = -1, chr;
+			while (chr = chars[++i]) {
+				glyph = glyphs[chr] || this.missingGlyph;
+				if (!glyph) continue;
+				if (kerning) {
+					width -= k = kerning[chr] || 0;
+					jumps[j] -= k;
+				}
+				w = glyph.w;
+				if (isNaN(w)) w = +this.w; // may have been a String in old fonts
+				if (w > 0) {
+					w += letterSpacing;
+					if (wordSeparators[chr]) w += wordSpacing;
+				}
+				width += jumps[++j] = ~~w; // get rid of decimals
+				kerning = glyph.k;
+			}
+			jumps.total = width;
+			return jumps;
+		};
+
+	}
+
+	function FontFamily() {
+
+		var styles = {}, mapping = {
+			oblique: 'italic',
+			italic: 'oblique'
+		};
+
+		this.add = function(font) {
+			(styles[font.style] || (styles[font.style] = {}))[font.weight] = font;
+		};
+
+		this.get = function(style, weight) {
+			var weights = styles[style] || styles[mapping[style]]
+				|| styles.normal || styles.italic || styles.oblique;
+			if (!weights) return null;
+			// we don't have to worry about "bolder" and "lighter"
+			// because IE's currentStyle returns a numeric value for it,
+			// and other browsers use the computed value anyway
+			weight = {
+				normal: 400,
+				bold: 700
+			}[weight] || parseInt(weight, 10);
+			if (weights[weight]) return weights[weight];
+			// http://www.w3.org/TR/CSS21/fonts.html#propdef-font-weight
+			// Gecko uses x99/x01 for lighter/bolder
+			var up = {
+				1: 1,
+				99: 0
+			}[weight % 100], alts = [], min, max;
+			if (up === undefined) up = weight > 400;
+			if (weight == 500) weight = 400;
+			for (var alt in weights) {
+				if (!hasOwnProperty(weights, alt)) continue;
+				alt = parseInt(alt, 10);
+				if (!min || alt < min) min = alt;
+				if (!max || alt > max) max = alt;
+				alts.push(alt);
+			}
+			if (weight < min) weight = min;
+			if (weight > max) weight = max;
+			alts.sort(function(a, b) {
+				return (up
+					? (a >= weight && b >= weight) ? a < b : a > b
+					: (a <= weight && b <= weight) ? a > b : a < b) ? -1 : 1;
+			});
+			return weights[alts[0]];
+		};
+
+	}
+
+	function HoverHandler() {
+
+		function contains(node, anotherNode) {
+			try {
+				if (node.contains) return node.contains(anotherNode);
+				return node.compareDocumentPosition(anotherNode) & 16;
+			}
+			catch(e) {} // probably a XUL element such as a scrollbar
+			return false;
+		}
+
+		// mouseover/mouseout (standards) mode
+		function onOverOut(e) {
+			var related = e.relatedTarget;
+			// there might be no relatedTarget if the element is right next
+			// to the window frame
+			if (related && contains(this, related)) return;
+			trigger(this, e.type == 'mouseover');
+		}
+
+		// mouseenter/mouseleave (probably ie) mode
+		function onEnterLeave(e) {
+			if (!e) e = window.event;
+			// ie model, we don't have access to "this", but
+			// mouseenter/leave doesn't bubble so it's fine.
+			trigger(e.target || e.srcElement, e.type == 'mouseenter');
+		}
+
+		function trigger(el, hoverState) {
+			// A timeout is needed so that the event can actually "happen"
+			// before replace is triggered. This ensures that styles are up
+			// to date.
+			setTimeout(function() {
+				var options = sharedStorage.get(el).options;
+				if (hoverState) {
+					options = merge(options, options.hover);
+					options._mediatorMode = 1;
+				}
+				api.replace(el, options, true);
+			}, 10);
+		}
+
+		this.attach = function(el) {
+			if (el.onmouseenter === undefined) {
+				addEvent(el, 'mouseover', onOverOut);
+				addEvent(el, 'mouseout', onOverOut);
+			}
+			else {
+				addEvent(el, 'mouseenter', onEnterLeave);
+				addEvent(el, 'mouseleave', onEnterLeave);
+			}
+		};
+
+		this.detach = function(el) {
+			if (el.onmouseenter === undefined) {
+				removeEvent(el, 'mouseover', onOverOut);
+				removeEvent(el, 'mouseout', onOverOut);
+			}
+			else {
+				removeEvent(el, 'mouseenter', onEnterLeave);
+				removeEvent(el, 'mouseleave', onEnterLeave);
+			}
+		};
+
+	}
+
+	function ReplaceHistory() {
+
+		var list = [], map = {};
+
+		function filter(keys) {
+			var values = [], key;
+			for (var i = 0; key = keys[i]; ++i) values[i] = list[map[key]];
+			return values;
+		}
+
+		this.add = function(key, args) {
+			map[key] = list.push(args) - 1;
+		};
+
+		this.repeat = function() {
+			var snapshot = arguments.length ? filter(arguments) : list, args;
+			for (var i = 0; args = snapshot[i++];) api.replace(args[0], args[1], true);
+		};
+
+	}
+
+	function Storage() {
+
+		var map = {}, at = 0;
+
+		function identify(el) {
+			return el.cufid || (el.cufid = ++at);
+		}
+
+		this.get = function(el) {
+			var id = identify(el);
+			return map[id] || (map[id] = {});
+		};
+
+	}
+
+	function Style(style) {
+
+		var custom = {}, sizes = {};
+
+		this.extend = function(styles) {
+			for (var property in styles) {
+				if (hasOwnProperty(styles, property)) custom[property] = styles[property];
+			}
+			return this;
+		};
+
+		this.get = function(property) {
+			return custom[property] != undefined ? custom[property] : style[property];
+		};
+
+		this.getSize = function(property, base) {
+			return sizes[property] || (sizes[property] = new CSS.Size(this.get(property), base));
+		};
+
+		this.isUsable = function() {
+			return !!style;
+		};
+
+	}
+
+	function addEvent(el, type, listener) {
+		if (el.addEventListener) {
+			el.addEventListener(type, listener, false);
+		}
+		else if (el.attachEvent) {
+			// we don't really need "this" right now, saves code
+			el.attachEvent('on' + type, listener);
+		}
+	}
+
+	function attach(el, options) {
+		if (options._mediatorMode) return el;
+		var storage = sharedStorage.get(el);
+		var oldOptions = storage.options;
+		if (oldOptions) {
+			if (oldOptions === options) return el;
+			if (oldOptions.hover) hoverHandler.detach(el);
+		}
+		if (options.hover && options.hoverables[el.nodeName.toLowerCase()]) {
+			hoverHandler.attach(el);
+		}
+		storage.options = options;
+		return el;
+	}
+
+	function cached(fun) {
+		var cache = {};
+		return function(key) {
+			if (!hasOwnProperty(cache, key)) cache[key] = fun.apply(null, arguments);
+			return cache[key];
+		};
+	}
+
+	function getFont(el, style) {
+		var families = CSS.quotedList(style.get('fontFamily').toLowerCase()), family;
+		for (var i = 0; family = families[i]; ++i) {
+			if (fonts[family]) return fonts[family].get(style.get('fontStyle'), style.get('fontWeight'));
+		}
+		return null;
+	}
+
+	function elementsByTagName(query) {
+		return document.getElementsByTagName(query);
+	}
+
+	function hasOwnProperty(obj, property) {
+		return obj.hasOwnProperty(property);
+	}
+
+	function merge() {
+		var merged = {}, arg, key;
+		for (var i = 0, l = arguments.length; arg = arguments[i], i < l; ++i) {
+			for (key in arg) {
+				if (hasOwnProperty(arg, key)) merged[key] = arg[key];
+			}
+		}
+		return merged;
+	}
+
+	function process(font, text, style, options, node, el) {
+		var fragment = document.createDocumentFragment(), processed;
+		if (text === '') return fragment;
+		var separate = options.separate;
+		var parts = text.split(separators[separate]), needsAligning = (separate == 'words');
+		if (needsAligning && HAS_BROKEN_REGEXP) {
+			// @todo figure out a better way to do this
+			if (/^\s/.test(text)) parts.unshift('');
+			if (/\s$/.test(text)) parts.push('');
+		}
+		for (var i = 0, l = parts.length; i < l; ++i) {
+			processed = engines[options.engine](font,
+				needsAligning ? CSS.textAlign(parts[i], style, i, l) : parts[i],
+				style, options, node, el, i < l - 1);
+			if (processed) fragment.appendChild(processed);
+		}
+		return fragment;
+	}
+
+	function removeEvent(el, type, listener) {
+		if (el.removeEventListener) {
+			el.removeEventListener(type, listener, false);
+		}
+		else if (el.detachEvent) {
+			el.detachEvent('on' + type, listener);
+		}
+	}
+
+	function replaceElement(el, options) {
+		var name = el.nodeName.toLowerCase();
+		if (options.ignore[name]) return;
+		if (options.ignoreClass && options.ignoreClass.test(el.className)) return;
+		if (options.onBeforeReplace) options.onBeforeReplace(el, options);
+		var replace = !options.textless[name], simple = (options.trim === 'simple');
+		var style = CSS.getStyle(attach(el, options)).extend(options);
+		// may cause issues if the element contains other elements
+		// with larger fontSize, however such cases are rare and can
+		// be fixed by using a more specific selector
+		if (parseFloat(style.get('fontSize')) === 0) return;
+		var font = getFont(el, style), node, type, next, anchor, text, lastElement;
+		var isShy = options.softHyphens, anyShy = false, pos, shy, reShy = /\u00ad/g;
+		var modifyText = options.modifyText;
+		if (!font) return;
+		for (node = el.firstChild; node; node = next) {
+			type = node.nodeType;
+			next = node.nextSibling;
+			if (replace && type == 3) {
+				if (isShy && el.nodeName.toLowerCase() != TAG_SHY) {
+					pos = node.data.indexOf('\u00ad');
+					if (pos >= 0) {
+						node.splitText(pos);
+						next = node.nextSibling;
+						next.deleteData(0, 1);
+						shy = document.createElement(TAG_SHY);
+						shy.appendChild(document.createTextNode('\u00ad'));
+						el.insertBefore(shy, next);
+						next = shy;
+						anyShy = true;
+					}
+				}
+				// Node.normalize() is broken in IE 6, 7, 8
+				if (anchor) {
+					anchor.appendData(node.data);
+					el.removeChild(node);
+				}
+				else anchor = node;
+				if (next) continue;
+			}
+			if (anchor) {
+				text = anchor.data;
+				if (!isShy) text = text.replace(reShy, '');
+				text = CSS.whiteSpace(text, style, anchor, lastElement, simple);
+				// modify text only on the first replace
+				if (modifyText) text = modifyText(text, anchor, el, options);
+				el.replaceChild(process(font, text, style, options, node, el), anchor);
+				anchor = null;
+			}
+			if (type == 1) {
+				if (node.firstChild) {
+					if (node.nodeName.toLowerCase() == 'cufon') {
+						engines[options.engine](font, null, style, options, node, el);
+					}
+					else arguments.callee(node, options);
+				}
+				lastElement = node;
+			}
+		}
+		if (isShy && anyShy) {
+			updateShy(el);
+			if (!trackingShy) addEvent(window, 'resize', updateShyOnResize);
+			trackingShy = true;
+		}
+		if (options.onAfterReplace) options.onAfterReplace(el, options);
+	}
+
+	function updateShy(context) {
+		var shys, shy, parent, glue, newGlue, next, prev, i;
+		shys = context.getElementsByTagName(TAG_SHY);
+		// unfortunately there doesn't seem to be any easy
+		// way to avoid having to loop through the shys twice.
+		for (i = 0; shy = shys[i]; ++i) {
+			shy.className = C_SHY_DISABLED;
+			glue = parent = shy.parentNode;
+			if (glue.nodeName.toLowerCase() != TAG_GLUE) {
+				newGlue = document.createElement(TAG_GLUE);
+				newGlue.appendChild(shy.previousSibling);
+				parent.insertBefore(newGlue, shy);
+				newGlue.appendChild(shy);
+			}
+			else {
+				// get rid of double glue (edge case fix)
+				glue = glue.parentNode;
+				if (glue.nodeName.toLowerCase() == TAG_GLUE) {
+					parent = glue.parentNode;
+					while (glue.firstChild) {
+						parent.insertBefore(glue.firstChild, glue);
+					}
+					parent.removeChild(glue);
+				}
+			}
+		}
+		for (i = 0; shy = shys[i]; ++i) {
+			shy.className = '';
+			glue = shy.parentNode;
+			parent = glue.parentNode;
+			next = glue.nextSibling || parent.nextSibling;
+			// make sure we're comparing same types
+			prev = (next.nodeName.toLowerCase() == TAG_GLUE) ? glue : shy.previousSibling;
+			if (prev.offsetTop >= next.offsetTop) {
+				shy.className = C_SHY_DISABLED;
+				if (prev.offsetTop < next.offsetTop) {
+					// we have an annoying edge case, double the glue
+					newGlue = document.createElement(TAG_GLUE);
+					parent.insertBefore(newGlue, glue);
+					newGlue.appendChild(glue);
+					newGlue.appendChild(next);
+				}
+			}
+		}
+	}
+
+	function updateShyOnResize() {
+		if (ignoreResize) return; // needed for IE
+		CSS.addClass(DOM.root(), C_VIEWPORT_RESIZING);
+		clearTimeout(shyTimer);
+		shyTimer = setTimeout(function() {
+			ignoreResize = true;
+			CSS.removeClass(DOM.root(), C_VIEWPORT_RESIZING);
+			updateShy(document);
+			ignoreResize = false;
+		}, 100);
+	}
+
+	var HAS_BROKEN_REGEXP = ' '.split(/\s+/).length == 0;
+	var TAG_GLUE = 'cufonglue';
+	var TAG_SHY = 'cufonshy';
+	var C_SHY_DISABLED = 'cufon-shy-disabled';
+	var C_VIEWPORT_RESIZING = 'cufon-viewport-resizing';
+
+	var sharedStorage = new Storage();
+	var hoverHandler = new HoverHandler();
+	var replaceHistory = new ReplaceHistory();
+	var initialized = false;
+	var trackingShy = false;
+	var shyTimer;
+	var ignoreResize = false;
+
+	var engines = {}, fonts = {}, defaultOptions = {
+		autoDetect: false,
+		engine: null,
+		forceHitArea: false,
+		hover: false,
+		hoverables: {
+			a: true
+		},
+		ignore: {
+			applet: 1,
+			canvas: 1,
+			col: 1,
+			colgroup: 1,
+			head: 1,
+			iframe: 1,
+			map: 1,
+			noscript: 1,
+			optgroup: 1,
+			option: 1,
+			script: 1,
+			select: 1,
+			style: 1,
+			textarea: 1,
+			title: 1,
+			pre: 1
+		},
+		ignoreClass: null,
+		modifyText: null,
+		onAfterReplace: null,
+		onBeforeReplace: null,
+		printable: true,
+		selector: (
+				window.Sizzle
+			||	(window.jQuery && function(query) { return jQuery(query); }) // avoid noConflict issues
+			||	(window.dojo && dojo.query)
+			||	(window.glow && glow.dom && glow.dom.get)
+			||	(window.Ext && Ext.query)
+			||	(window.YAHOO && YAHOO.util && YAHOO.util.Selector && YAHOO.util.Selector.query)
+			||	(window.$$ && function(query) { return $$(query); })
+			||	(window.$ && function(query) { return $(query); })
+			||	(document.querySelectorAll && function(query) { return document.querySelectorAll(query); })
+			||	elementsByTagName
+		),
+		separate: 'words', // 'none' and 'characters' are also accepted
+		softHyphens: true,
+		textless: {
+			dl: 1,
+			html: 1,
+			ol: 1,
+			table: 1,
+			tbody: 1,
+			thead: 1,
+			tfoot: 1,
+			tr: 1,
+			ul: 1
+		},
+		textShadow: 'none',
+		trim: 'advanced'
+	};
+
+	var separators = {
+		// The first pattern may cause unicode characters above
+		// code point 255 to be removed in Safari 3.0. Luckily enough
+		// Safari 3.0 does not include non-breaking spaces in \s, so
+		// we can just use a simple alternative pattern.
+		words: /\s/.test('\u00a0') ? /[^\S\u00a0]+/ : /\s+/,
+		characters: '',
+		none: /^/
+	};
+
+	api.now = function() {
+		DOM.ready();
+		return api;
+	};
+
+	api.refresh = function() {
+		replaceHistory.repeat.apply(replaceHistory, arguments);
+		return api;
+	};
+
+	api.registerEngine = function(id, engine) {
+		if (!engine) return api;
+		engines[id] = engine;
+		return api.set('engine', id);
+	};
+
+	api.registerFont = function(data) {
+		if (!data) return api;
+		var font = new Font(data), family = font.family;
+		if (!fonts[family]) fonts[family] = new FontFamily();
+		fonts[family].add(font);
+		return api.set('fontFamily', '"' + family + '"');
+	};
+
+	api.replace = function(elements, options, ignoreHistory) {
+		options = merge(defaultOptions, options);
+		if (!options.engine) return api; // there's no browser support so we'll just stop here
+		if (!initialized) {
+			CSS.addClass(DOM.root(), 'cufon-active cufon-loading');
+			CSS.ready(function() {
+				// fires before any replace() calls, but it doesn't really matter
+				CSS.addClass(CSS.removeClass(DOM.root(), 'cufon-loading'), 'cufon-ready');
+			});
+			initialized = true;
+		}
+		if (options.hover) options.forceHitArea = true;
+		if (options.autoDetect) delete options.fontFamily;
+		if (typeof options.ignoreClass == 'string') {
+			options.ignoreClass = new RegExp('(?:^|\\s)(?:' + options.ignoreClass.replace(/\s+/g, '|') + ')(?:\\s|$)');
+		}
+		if (typeof options.textShadow == 'string') {
+			options.textShadow = CSS.textShadow(options.textShadow);
+		}
+		if (typeof options.color == 'string' && /^-/.test(options.color)) {
+			options.textGradient = CSS.gradient(options.color);
+		}
+		else delete options.textGradient;
+		if (typeof elements == 'string') {
+			if (!ignoreHistory) replaceHistory.add(elements, arguments);
+			elements = [ elements ];
+		}
+		else if (elements.nodeType) elements = [ elements ];
+		CSS.ready(function() {
+			for (var i = 0, l = elements.length; i < l; ++i) {
+				var el = elements[i];
+				if (typeof el == 'string') api.replace(options.selector(el), options, true);
+				else replaceElement(el, options);
+			}
+		});
+		return api;
+	};
+
+	api.set = function(option, value) {
+		defaultOptions[option] = value;
+		return api;
+	};
+
+	return api;
+
+})();
+
+Cufon.registerEngine('vml', (function() {
+
+	var ns = document.namespaces;
+	if (!ns) return;
+	ns.add('cvml', 'urn:schemas-microsoft-com:vml');
+	ns = null;
+
+	var check = document.createElement('cvml:shape');
+	check.style.behavior = 'url(#default#VML)';
+	if (!check.coordsize) return; // VML isn't supported
+	check = null;
+
+	var HAS_BROKEN_LINEHEIGHT = (document.documentMode || 0) < 8;
+
+	document.write(('<style type="text/css">' +
+		'cufoncanvas{text-indent:0;}' +
+		'@media screen{' +
+			'cvml\\:shape,cvml\\:rect,cvml\\:fill,cvml\\:shadow{behavior:url(#default#VML);display:block;antialias:true;position:absolute;}' +
+			'cufoncanvas{position:absolute;text-align:left;}' +
+			'cufon{display:inline-block;position:relative;vertical-align:' +
+			(HAS_BROKEN_LINEHEIGHT
+				? 'middle'
+				: 'text-bottom') +
+			';}' +
+			'cufon cufontext{position:absolute;left:-10000in;font-size:1px;text-align:left;}' +
+			'cufonshy.cufon-shy-disabled,.cufon-viewport-resizing cufonshy{display:none;}' +
+			'cufonglue{white-space:nowrap;display:inline-block;}' +
+			'.cufon-viewport-resizing cufonglue{white-space:normal;}' +
+			'a cufon{cursor:pointer}' + // ignore !important here
+		'}' +
+		'@media print{' +
+			'cufon cufoncanvas{display:none;}' +
+		'}' +
+	'</style>').replace(/;/g, '!important;'));
+
+	function getFontSizeInPixels(el, value) {
+		return getSizeInPixels(el, /(?:em|ex|%)$|^[a-z-]+$/i.test(value) ? '1em' : value);
+	}
+
+	// Original by Dead Edwards.
+	// Combined with getFontSizeInPixels it also works with relative units.
+	function getSizeInPixels(el, value) {
+		if (!isNaN(value) || /px$/i.test(value)) return parseFloat(value);
+		var style = el.style.left, runtimeStyle = el.runtimeStyle.left;
+		el.runtimeStyle.left = el.currentStyle.left;
+		el.style.left = value.replace('%', 'em');
+		var result = el.style.pixelLeft;
+		el.style.left = style;
+		el.runtimeStyle.left = runtimeStyle;
+		return result;
+	}
+
+	function getSpacingValue(el, style, size, property) {
+		var key = 'computed' + property, value = style[key];
+		if (isNaN(value)) {
+			value = style.get(property);
+			style[key] = value = (value == 'normal') ? 0 : ~~size.convertFrom(getSizeInPixels(el, value));
+		}
+		return value;
+	}
+
+	var fills = {};
+
+	function gradientFill(gradient) {
+		var id = gradient.id;
+		if (!fills[id]) {
+			var stops = gradient.stops, fill = document.createElement('cvml:fill'), colors = [];
+			fill.type = 'gradient';
+			fill.angle = 180;
+			fill.focus = '0';
+			fill.method = 'none';
+			fill.color = stops[0][1];
+			for (var j = 1, k = stops.length - 1; j < k; ++j) {
+				colors.push(stops[j][0] * 100 + '% ' + stops[j][1]);
+			}
+			fill.colors = colors.join(',');
+			fill.color2 = stops[k][1];
+			fills[id] = fill;
+		}
+		return fills[id];
+	}
+
+	return function(font, text, style, options, node, el, hasNext) {
+
+		var redraw = (text === null);
+
+		if (redraw) text = node.alt;
+
+		var viewBox = font.viewBox;
+
+		var size = style.computedFontSize || (style.computedFontSize = new Cufon.CSS.Size(getFontSizeInPixels(el, style.get('fontSize')) + 'px', font.baseSize));
+
+		var wrapper, canvas;
+
+		if (redraw) {
+			wrapper = node;
+			canvas = node.firstChild;
+		}
+		else {
+			wrapper = document.createElement('cufon');
+			wrapper.className = 'cufon cufon-vml';
+			wrapper.alt = text;
+
+			canvas = document.createElement('cufoncanvas');
+			wrapper.appendChild(canvas);
+
+			if (options.printable) {
+				var print = document.createElement('cufontext');
+				print.appendChild(document.createTextNode(text));
+				wrapper.appendChild(print);
+			}
+
+			// ie6, for some reason, has trouble rendering the last VML element in the document.
+			// we can work around this by injecting a dummy element where needed.
+			// @todo find a better solution
+			if (!hasNext) wrapper.appendChild(document.createElement('cvml:shape'));
+		}
+
+		var wStyle = wrapper.style;
+		var cStyle = canvas.style;
+
+		var height = size.convert(viewBox.height), roundedHeight = Math.ceil(height);
+		var roundingFactor = roundedHeight / height;
+		var stretchFactor = roundingFactor * Cufon.CSS.fontStretch(style.get('fontStretch'));
+		var minX = viewBox.minX, minY = viewBox.minY;
+
+		cStyle.height = roundedHeight;
+		cStyle.top = Math.round(size.convert(minY - font.ascent));
+		cStyle.left = Math.round(size.convert(minX));
+
+		wStyle.height = size.convert(font.height) + 'px';
+
+		var color = style.get('color');
+		var chars = Cufon.CSS.textTransform(text, style).split('');
+
+		var jumps = font.spacing(chars,
+			getSpacingValue(el, style, size, 'letterSpacing'),
+			getSpacingValue(el, style, size, 'wordSpacing')
+		);
+
+		if (!jumps.length) return null;
+
+		var width = jumps.total;
+		var fullWidth = -minX + width + (viewBox.width - jumps[jumps.length - 1]);
+
+		var shapeWidth = size.convert(fullWidth * stretchFactor), roundedShapeWidth = Math.round(shapeWidth);
+
+		var coordSize = fullWidth + ',' + viewBox.height, coordOrigin;
+		var stretch = 'r' + coordSize + 'ns';
+
+		var fill = options.textGradient && gradientFill(options.textGradient);
+
+		var glyphs = font.glyphs, offsetX = 0;
+		var shadows = options.textShadow;
+		var i = -1, j = 0, chr;
+
+		while (chr = chars[++i]) {
+
+			var glyph = glyphs[chars[i]] || font.missingGlyph, shape;
+			if (!glyph) continue;
+
+			if (redraw) {
+				// some glyphs may be missing so we can't use i
+				shape = canvas.childNodes[j];
+				while (shape.firstChild) shape.removeChild(shape.firstChild); // shadow, fill
+			}
+			else {
+				shape = document.createElement('cvml:shape');
+				canvas.appendChild(shape);
+			}
+
+			shape.stroked = 'f';
+			shape.coordsize = coordSize;
+			shape.coordorigin = coordOrigin = (minX - offsetX) + ',' + minY;
+			shape.path = (glyph.d ? 'm' + glyph.d + 'xe' : '') + 'm' + coordOrigin + stretch;
+			shape.fillcolor = color;
+
+			if (fill) shape.appendChild(fill.cloneNode(false));
+
+			// it's important to not set top/left or IE8 will grind to a halt
+			var sStyle = shape.style;
+			sStyle.width = roundedShapeWidth;
+			sStyle.height = roundedHeight;
+
+			if (shadows) {
+				// due to the limitations of the VML shadow element there
+				// can only be two visible shadows. opacity is shared
+				// for all shadows.
+				var shadow1 = shadows[0], shadow2 = shadows[1];
+				var color1 = Cufon.CSS.color(shadow1.color), color2;
+				var shadow = document.createElement('cvml:shadow');
+				shadow.on = 't';
+				shadow.color = color1.color;
+				shadow.offset = shadow1.offX + ',' + shadow1.offY;
+				if (shadow2) {
+					color2 = Cufon.CSS.color(shadow2.color);
+					shadow.type = 'double';
+					shadow.color2 = color2.color;
+					shadow.offset2 = shadow2.offX + ',' + shadow2.offY;
+				}
+				shadow.opacity = color1.opacity || (color2 && color2.opacity) || 1;
+				shape.appendChild(shadow);
+			}
+
+			offsetX += jumps[j++];
+		}
+
+		// addresses flickering issues on :hover
+
+		var cover = shape.nextSibling, coverFill, vStyle;
+
+		if (options.forceHitArea) {
+
+			if (!cover) {
+				cover = document.createElement('cvml:rect');
+				cover.stroked = 'f';
+				cover.className = 'cufon-vml-cover';
+				coverFill = document.createElement('cvml:fill');
+				coverFill.opacity = 0;
+				cover.appendChild(coverFill);
+				canvas.appendChild(cover);
+			}
+
+			vStyle = cover.style;
+
+			vStyle.width = roundedShapeWidth;
+			vStyle.height = roundedHeight;
+
+		}
+		else if (cover) canvas.removeChild(cover);
+
+		wStyle.width = Math.max(Math.ceil(size.convert(width * stretchFactor)), 0);
+
+		if (HAS_BROKEN_LINEHEIGHT) {
+
+			var yAdjust = style.computedYAdjust;
+
+			if (yAdjust === undefined) {
+				var lineHeight = style.get('lineHeight');
+				if (lineHeight == 'normal') lineHeight = '1em';
+				else if (!isNaN(lineHeight)) lineHeight += 'em'; // no unit
+				style.computedYAdjust = yAdjust = 0.5 * (getSizeInPixels(el, lineHeight) - parseFloat(wStyle.height));
+			}
+
+			if (yAdjust) {
+				wStyle.marginTop = Math.ceil(yAdjust) + 'px';
+				wStyle.marginBottom = yAdjust + 'px';
+			}
+
+		}
+
+		return wrapper;
+
+	};
+
+})());
+
+Cufon.registerEngine('canvas', (function() {
+
+	// Safari 2 doesn't support .apply() on native methods
+
+	var check = document.createElement('canvas');
+	if (!check || !check.getContext || !check.getContext.apply) return;
+	check = null;
+
+	var HAS_INLINE_BLOCK = Cufon.CSS.supports('display', 'inline-block');
+
+	// Firefox 2 w/ non-strict doctype (almost standards mode)
+	var HAS_BROKEN_LINEHEIGHT = !HAS_INLINE_BLOCK && (document.compatMode == 'BackCompat' || /frameset|transitional/i.test(document.doctype.publicId));
+
+	var styleSheet = document.createElement('style');
+	styleSheet.type = 'text/css';
+	styleSheet.appendChild(document.createTextNode((
+		'cufon{text-indent:0;}' +
+		'@media screen,projection{' +
+			'cufon{display:inline;display:inline-block;position:relative;vertical-align:middle;' +
+			(HAS_BROKEN_LINEHEIGHT
+				? ''
+				: 'font-size:1px;line-height:1px;') +
+			'}cufon cufontext{display:-moz-inline-box;display:inline-block;width:0;height:0;text-align:left;text-indent:-10000in;}' +
+			(HAS_INLINE_BLOCK
+				? 'cufon canvas{position:relative;}'
+				: 'cufon canvas{position:absolute;}') +
+			'cufonshy.cufon-shy-disabled,.cufon-viewport-resizing cufonshy{display:none;}' +
+			'cufonglue{white-space:nowrap;display:inline-block;}' +
+			'.cufon-viewport-resizing cufonglue{white-space:normal;}' +
+		'}' +
+		'@media print{' +
+			'cufon{padding:0;}' + // Firefox 2
+			'cufon canvas{display:none;}' +
+		'}'
+	).replace(/;/g, '!important;')));
+	document.getElementsByTagName('head')[0].appendChild(styleSheet);
+
+	function generateFromVML(path, context) {
+		var atX = 0, atY = 0;
+		var code = [], re = /([mrvxe])([^a-z]*)/g, match;
+		generate: for (var i = 0; match = re.exec(path); ++i) {
+			var c = match[2].split(',');
+			switch (match[1]) {
+				case 'v':
+					code[i] = { m: 'bezierCurveTo', a: [ atX + ~~c[0], atY + ~~c[1], atX + ~~c[2], atY + ~~c[3], atX += ~~c[4], atY += ~~c[5] ] };
+					break;
+				case 'r':
+					code[i] = { m: 'lineTo', a: [ atX += ~~c[0], atY += ~~c[1] ] };
+					break;
+				case 'm':
+					code[i] = { m: 'moveTo', a: [ atX = ~~c[0], atY = ~~c[1] ] };
+					break;
+				case 'x':
+					code[i] = { m: 'closePath' };
+					break;
+				case 'e':
+					break generate;
+			}
+			context[code[i].m].apply(context, code[i].a);
+		}
+		return code;
+	}
+
+	function interpret(code, context) {
+		for (var i = 0, l = code.length; i < l; ++i) {
+			var line = code[i];
+			context[line.m].apply(context, line.a);
+		}
+	}
+
+	return function(font, text, style, options, node, el) {
+
+		var redraw = (text === null);
+
+		if (redraw) text = node.getAttribute('alt');
+
+		var viewBox = font.viewBox;
+
+		var size = style.getSize('fontSize', font.baseSize);
+
+		var expandTop = 0, expandRight = 0, expandBottom = 0, expandLeft = 0;
+		var shadows = options.textShadow, shadowOffsets = [];
+		if (shadows) {
+			for (var i = shadows.length; i--;) {
+				var shadow = shadows[i];
+				var x = size.convertFrom(parseFloat(shadow.offX));
+				var y = size.convertFrom(parseFloat(shadow.offY));
+				shadowOffsets[i] = [ x, y ];
+				if (y < expandTop) expandTop = y;
+				if (x > expandRight) expandRight = x;
+				if (y > expandBottom) expandBottom = y;
+				if (x < expandLeft) expandLeft = x;
+			}
+		}
+
+		var chars = Cufon.CSS.textTransform(text, style).split('');
+
+		var jumps = font.spacing(chars,
+			~~size.convertFrom(parseFloat(style.get('letterSpacing')) || 0),
+			~~size.convertFrom(parseFloat(style.get('wordSpacing')) || 0)
+		);
+
+		if (!jumps.length) return null; // there's nothing to render
+
+		var width = jumps.total;
+
+		expandRight += viewBox.width - jumps[jumps.length - 1];
+		expandLeft += viewBox.minX;
+
+		var wrapper, canvas;
+
+		if (redraw) {
+			wrapper = node;
+			canvas = node.firstChild;
+		}
+		else {
+			wrapper = document.createElement('cufon');
+			wrapper.className = 'cufon cufon-canvas';
+			wrapper.setAttribute('alt', text);
+
+			canvas = document.createElement('canvas');
+			wrapper.appendChild(canvas);
+
+			if (options.printable) {
+				var print = document.createElement('cufontext');
+				print.appendChild(document.createTextNode(text));
+				wrapper.appendChild(print);
+			}
+		}
+
+		var wStyle = wrapper.style;
+		var cStyle = canvas.style;
+
+		var height = size.convert(viewBox.height);
+		var roundedHeight = Math.ceil(height);
+		var roundingFactor = roundedHeight / height;
+		var stretchFactor = roundingFactor * Cufon.CSS.fontStretch(style.get('fontStretch'));
+		var stretchedWidth = width * stretchFactor;
+
+		var canvasWidth = Math.ceil(size.convert(stretchedWidth + expandRight - expandLeft));
+		var canvasHeight = Math.ceil(size.convert(viewBox.height - expandTop + expandBottom));
+
+		canvas.width = canvasWidth;
+		canvas.height = canvasHeight;
+
+		// needed for WebKit and full page zoom
+		cStyle.width = canvasWidth + 'px';
+		cStyle.height = canvasHeight + 'px';
+
+		// minY has no part in canvas.height
+		expandTop += viewBox.minY;
+
+		cStyle.top = Math.round(size.convert(expandTop - font.ascent)) + 'px';
+		cStyle.left = Math.round(size.convert(expandLeft)) + 'px';
+
+		var wrapperWidth = Math.max(Math.ceil(size.convert(stretchedWidth)), 0) + 'px';
+
+		if (HAS_INLINE_BLOCK) {
+			wStyle.width = wrapperWidth;
+			wStyle.height = size.convert(font.height) + 'px';
+		}
+		else {
+			wStyle.paddingLeft = wrapperWidth;
+			wStyle.paddingBottom = (size.convert(font.height) - 1) + 'px';
+		}
+
+		var g = canvas.getContext('2d'), scale = height / viewBox.height;
+		var pixelRatio = window.devicePixelRatio || 1;
+		if (pixelRatio != 1) {
+			canvas.width = canvasWidth * pixelRatio;
+			canvas.height = canvasHeight * pixelRatio;
+			g.scale(pixelRatio, pixelRatio);
+		}
+
+		// proper horizontal scaling is performed later
+		g.scale(scale, scale * roundingFactor);
+		g.translate(-expandLeft, -expandTop);
+		g.save();
+
+		function renderText() {
+			var glyphs = font.glyphs, glyph, i = -1, j = -1, chr;
+			g.scale(stretchFactor, 1);
+			while (chr = chars[++i]) {
+				var glyph = glyphs[chars[i]] || font.missingGlyph;
+				if (!glyph) continue;
+				if (glyph.d) {
+					g.beginPath();
+					// the following moveTo is for Opera 9.2. if we don't
+					// do this, it won't forget the previous path which
+					// results in garbled text.
+					g.moveTo(0, 0);
+					if (glyph.code) interpret(glyph.code, g);
+					else glyph.code = generateFromVML('m' + glyph.d, g);
+					g.fill();
+				}
+				g.translate(jumps[++j], 0);
+			}
+			g.restore();
+		}
+
+		if (shadows) {
+			for (var i = shadows.length; i--;) {
+				var shadow = shadows[i];
+				g.save();
+				g.fillStyle = shadow.color;
+				g.translate.apply(g, shadowOffsets[i]);
+				renderText();
+			}
+		}
+
+		var gradient = options.textGradient;
+		if (gradient) {
+			var stops = gradient.stops, fill = g.createLinearGradient(0, viewBox.minY, 0, viewBox.maxY);
+			for (var i = 0, l = stops.length; i < l; ++i) {
+				fill.addColorStop.apply(fill, stops[i]);
+			}
+			g.fillStyle = fill;
+		}
+		else g.fillStyle = style.get('color');
+
+		renderText();
+
+		return wrapper;
+
+	};
+
+})());

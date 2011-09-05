@@ -6,6 +6,9 @@
     <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="description" content="<?=$page->summary?>">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=true">
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="<?=$config->urls->templates?>/javascripts/scripts.js"></script>
@@ -27,7 +30,7 @@
           </a>
         </div>
 
-        <div class="column grid_9">
+        <div class="column grid_9 no_mobile">
           <ul class="nav">
             <?php
             $homepage = $pages->get("/"); 
@@ -40,6 +43,21 @@
             }?>
           </ul>
         </div>
+
+        <div class="mobile_nav no_desktop">
+          <select>
+            <?php
+            $homepage = $pages->get("/"); 
+            $children = $homepage->children;
+            $children->prepend($homepage); 
+
+            foreach($children as $child) {
+              $class = $child === $page->rootParent ? "selected" : '';
+              echo "<option value='{$child->url}'{$class}>{$child->title}</option>";
+            }?> 
+          </select>
+        </div>
+        
       </div>
     </div><!-- End header -->
     

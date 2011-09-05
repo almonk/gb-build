@@ -12,11 +12,16 @@ body {
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 40px;
+	height: 28px;
 	margin: 0;
 	padding: 0;
-	background: white url(sprite.png) repeat-x 0px 1px;
 	z-index: 999;
+  background-color:#000;
+  background-color:rgba(0,0,0,0.65);
+  border-bottom:1px solid rgba(0,0,0,0.8);
+  -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+-webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+
 }
 
 #adminbar li {
@@ -25,18 +30,20 @@ body {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	height: 40px;
-	border-right: 1px solid #cecece;
+	height: 28px;
 }
 
 #adminbar li a {
 	display: block;
 	float: left;
-	height: 40px;
-	line-height: 42px;
-	padding: 0 10px 0 36px;
+	height: 28px;
+	line-height: 26px;
+	padding: 0 10px;
 	font-family: arial, sans-serif;
-	color: #505050;
+	color: #fff;
+  text-decoration:none;
+  font-size:11px;
+  font-weight:bold;
 }
 
 #adminbar li a:hover {
@@ -45,48 +52,46 @@ body {
 
 #adminbar .admin, #adminbar .admin:hover {
 	float: right;
-	background: url(sprite.png) no-repeat 0px -42px;
 }
 
 #adminbar .admin a:hover  {
 	text-decoration: underline;
 }
 
-#adminbar .active, #adminbar li.active:hover {
-	background: url(sprite.png) repeat-x 0px -380px;
+#adminbar li.active{
+  background-color:#000;
 }
 
-
-
+/*
 #adminbar .browse {
-	border-left: 1px solid #cecece;
+  border-left: 1px solid #cecece;
 }
 
-#adminbar .browse a {
-	background: transparent url(sprite.png) 10px -182px;
+*//*#adminbar .browse a {
+  background: transparent url(sprite.png) 10px -182px;
 }
 
 #adminbar .edit a {
-	background: transparent url(sprite.png) 12px -97px;
+  background: transparent url(sprite.png) 12px -97px;
 }
 
 #adminbar .add-page a {
-	background: transparent url(sprite.png) 12px -140px;
+  background: transparent url(sprite.png) 12px -140px;
 }
 
 #adminbar .permissions a {
-	background: transparent url(sprite.png) 12px -327px;
-}
+  background: transparent url(sprite.png) 12px -327px;
+}*/
 
-#adminbar li:hover {
-	background: #dde1e4;
-}
+/*#adminbar li:hover {
+  background: #dde1e4;
+}*/
 
 #ab-modal {
 	z-index: 998;
 	background: white;
 	position: fixed;
-	top: 40px;
+	top: 29px;
 	left: 0px;
 	right: 0px;
 }

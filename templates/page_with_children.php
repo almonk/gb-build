@@ -1,6 +1,6 @@
 <? include ('./head.inc') ?>
   <div class="container page">    
-    <div class="row">
+    <div class="row no_mobile">
       <div class="column grid_3 sidebar">
         <ul>
           <?

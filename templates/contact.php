@@ -1,7 +1,7 @@
 <? include ('./head.inc') ?>
 <div class="container page">
   <div class="row">
-    <div class="sidebar column grid_3">
+    <div class="sidebar column grid_3 no_mobile">
       <ul>
         <? include('./_team_list.inc') ?>
       </ul>
@@ -41,6 +41,5 @@
     </div>
     </div>
     </div>
-
 
 <? include ('./foot.inc') ?>

@@ -1,4 +1,4 @@
-<div class="container footer">
+<div class="container footer no_mobile">
       <div class="row">
         <div class="column grid_6">
           <?=$pages->get('/')->address?>
