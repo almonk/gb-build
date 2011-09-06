@@ -1,4 +1,17 @@
-<? include ('./head.inc') ?>
+<?
+// Include the mobile device detetcion lib
+include('../lib/Mobile_Detect.php');
+$detect = new Mobile_Detect();
+
+// The homepage will show the 'enter' screen unless the url
+// has ?home=true appended to the url OR if the the user
+// is on a mobile device
+if (!$input->get->home && $detect->isMobile() == false) {
+  include('./enter.inc');//Show the enter screen
+}else{
+  // Start rendering the homepage
+  include ('./head.inc'); ?>
+
   <div class="container page">
     <div class="draw"></div>
     <div class="row">
@@ -23,5 +36,8 @@
 
     </div>
   </div>
-<? include ('./foot.inc') ?>
-
+  
+<?
+  include ('./foot.inc');
+}//End enter screen if/else
+?>

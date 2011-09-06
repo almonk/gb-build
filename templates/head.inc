@@ -25,7 +25,7 @@
     <div class="container header">
       <div class="row">
         <div class="column grid_3 logo">
-          <a href="<?=$config->urls->root?>"> 
+          <a href="<?=$config->urls->root?>?home=true"> 
             <img src="<?=$config->urls->templates?>/images/logo.png"/>
           </a>
         </div>
@@ -35,12 +35,18 @@
             <?php
             $homepage = $pages->get("/"); 
             $children = $homepage->children;
-            $children->prepend($homepage); 
+            $children->prepend($homepage);
 
-            foreach($children as $child) {
+            foreach($children as $child) {              
               $class = $child === $page->rootParent ? " class='current'" : '';
-              echo "<li><a$class href='{$child->url}'>{$child->title}</a></li>";
-            }?>
+              
+              if ($child->title == 'Home') {// Make a different rule for the homepage
+                echo "<li><a$class href='{$child->url}?home=true'>{$child->title}</a></li>";//Add ?home=true 
+              }else{
+                echo "<li><a$class href='{$child->url}'>{$child->title}</a></li>";
+              }
+            }              
+            ?>
           </ul>
         </div>
 
@@ -53,11 +59,15 @@
 
             foreach($children as $child) {
               $class = $child === $page->rootParent ? "selected" : '';
-              echo "<option value='{$child->url}'{$class}>{$child->title}</option>";
+
+              if ($child->title == 'Home') {// Make a different rule for the homepage
+                echo "<option value='{$child->url}?home=true'{$class}>{$child->title}</option>";
+              }else{
+                echo "<option value='{$child->url}'{$class}>{$child->title}</option>";  
+              }
             }?> 
           </select>
         </div>
         
       </div>
     </div><!-- End header -->
-    
