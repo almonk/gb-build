@@ -151,7 +151,7 @@ $config->maxUrlSegments = 4;
  */
 
 
-$config->dbHost = 'localhost';
+$config->dbHost = '127.0.0.1';
 $config->dbName = 'graceblue_test';
 $config->dbUser = 'root';
 $config->dbPass = 'root';

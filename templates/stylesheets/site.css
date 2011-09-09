@@ -255,4 +255,32 @@ a {
   overflow:hidden;
 }
 
+/*
+Enter screen
+*/
+.enter{
+  background-color:#090E28;
+  background-image:none;
+  cursor:pointer;
+}
 
+.enter h2 a{
+  color:#fff;
+}
+
+.enter h2{
+  margin-top:44px;
+}
+
+.enter_crest{
+  text-align:center;
+}
+
+.enter #right{
+  position:relative;
+  top:300px;
+}
+
+.enter #enter_screen{
+  height: 720px!important;
+}

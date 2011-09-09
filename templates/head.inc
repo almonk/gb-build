@@ -26,7 +26,7 @@
       <div class="row">
         <div class="column grid_3 logo">
           <a href="<?=$config->urls->root?>?home=true"> 
-            <img src="<?=$config->urls->templates?>/images/logo.png"/>
+            <img src="<?=$pages->get('/')->logo1->url?>"/>
           </a>
         </div>
 

@@ -80,3 +80,4 @@
 2011-09-06 16:25:08: guest:/graceblue/:Error:Class 'Mobile_Detect' not found (line 3 of /Applications/XAMPP/xamppfiles/htdocs/graceblue/site/templates/home.php)
 2011-09-06 16:25:09: guest:/graceblue/:Error:Class 'Mobile_Detect' not found (line 3 of /Applications/XAMPP/xamppfiles/htdocs/graceblue/site/templates/home.php)
 2011-09-06 16:25:28: guest:/graceblue/:Error:Class 'Mobile_Detect' not found (line 3 of /Applications/XAMPP/xamppfiles/htdocs/graceblue/site/templates/home.php)
+2011-09-06 19:38:44: Unknown User:/?/:ProcessWire Error:Exception:  (in /Applications/XAMPP/xamppfiles/htdocs/graceblue/wire/core/Database.php line 72)
