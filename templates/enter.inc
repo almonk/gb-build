@@ -26,12 +26,12 @@
     <div class="container">
       <div class="row" id="enter_screen">
         <div class="column grid_6 enter_crest">
-          <img id="enter_crest" src="<?=$pages->get('/')->crest2->url?>"/>
+          <img id="enter_crest" src="<?=$pages->get('/')->crest2->url?>" height="<?=$pages->get('/')->crest2->height?>"/>
         </div>
          
         <div class="row" id="right">
           <div class="column grid_2 spacer">
-           <img src="<?=$pages->get('/')->logo2->url?>"/> 
+           <img id="logo" src="<?=$pages->get('/')->logo2->url?>"/> 
           </div>
         
           <div class="column grid_4 page spacer">
