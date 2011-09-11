@@ -8,10 +8,29 @@ $(document).ready(function() {
   $('html').click(function() {
     window.location = $('#right h2 a').attr('href');
   });
+  
+  $(window).resize();
+});
+
+$(window).resize(function(){
   centerEnterScreen();
 });
 
+$(window).load(function() {
+  centerEnterScreen();
+
+  $('#enter_crest').fadeTo(500, 1, function() {
+    $('#logo').fadeTo(500, 1);
+    $('h2').fadeTo(500, 1);
+  });
+  
+});
+
 function centerEnterScreen(){
-  var enter_screen_height = $('#enter_screen').height();
-  console.log("Enter screen height: " + enter_screen_height);
+  $('.container').css({
+   position:'absolute',
+   top: ($(window).height() - $('.container').height())/2,
+   left: ($(window).width() - $('.container').outerWidth())/2
+  });
+	
 }

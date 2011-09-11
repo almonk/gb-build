@@ -19,6 +19,10 @@ $(window).resize(function() {
 	redraw();
 });
 
+$(window).load(function() {
+	redraw();
+});
+
 function redraw(){
 	var welcome_box_left = $(document).width(); 
 	draw_width = ((welcome_box_left - 940)/2)+10;
