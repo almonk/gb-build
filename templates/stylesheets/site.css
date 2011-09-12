@@ -144,8 +144,8 @@ a {
     .page .page_list:last-child {
       border-bottom: 0px; }
   .page .welcome_box {
-    background-color: #D2D1C2;
-    background-color: rgba(0, 0, 0, 0.07); }
+    background: #D2D1C2;
+    background: rgba(0, 0, 0, 0.07); }
     .page .welcome_box .padding {
       padding: 24px;
       padding-top: 28px;
