@@ -287,3 +287,10 @@ Enter screen
 .enter #enter_screen{
   height: 720px!important;
 }
+
+/*
+Cufon fixes
+*/
+.cufon-loading h1, .cufon-loading h2, .cufon-loading h3, .cufon-loading a{
+  visibility: hidden !important;
+}
