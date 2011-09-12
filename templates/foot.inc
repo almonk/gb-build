@@ -19,6 +19,7 @@
         </div>
       </div><!-- End row -->
     </div><!-- End footer -->
+
     <!-- Begin cufon fix -->
     <style type="text/css">h1,h2,h3,a{ visibility : visible }</style>
   </body>

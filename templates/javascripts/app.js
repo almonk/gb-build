@@ -16,6 +16,7 @@ $(document).ready(function() {
   });
 
   $('.person').biggerlink();
+  $('.page_list li').biggerlink();
 });
 
 $(window).resize(function() {

@@ -19,6 +19,10 @@
     <link type="text/css" media="print" rel="stylesheet" href="<?=$config->urls->templates?>/stylesheets/print.css" />
 
     <title><?=$page->title?> &mdash; Grace Blue</title>
+    <!--[if lt IE 7]>
+      <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
+    <![endif]-->
+
   </head>
   
   <body>
@@ -67,6 +71,11 @@
               }
             }?> 
           </select>
+          <br/>
+          <div class="mobile_toolbar">
+            <a href="tel:<?=$pages->get('/')->phone?>:" id="call">Call us</a>
+            <a href="http://maps.google.co.uk?q=<?=$pages->get('/')->address?>" id="map">View map</a>
+          </div>
         </div>
         
       </div>

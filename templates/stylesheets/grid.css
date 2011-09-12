@@ -127,6 +127,14 @@
   .grid_3 .pic img{
     width:200px;
   }
+  
+  .mobile_toolbar{
+    font-size:11px;
+    margin-top:10px;
+  }
 
+  .mobile_toolbar a{
+    margin-right:15px;
+  }
 
 }
