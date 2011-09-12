@@ -32,9 +32,13 @@
 	display: inline-block;
 }
 
+.no_desktop{
+  display:none;
+}
+
 @media only screen and (min-width: 768px){
   .no_desktop{
-    display:none;;
+    display:none;
   }
 }
 
@@ -83,6 +87,10 @@
 
   .draw, .no_mobile{
     display:none;
+  }
+
+  .no_desktop{
+    display:inline!important;
   }
 
   .page h1, .welcome_box h1{
