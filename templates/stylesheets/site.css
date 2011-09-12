@@ -168,7 +168,9 @@ a {
       font-size: 13px;
       text-transform: uppercase; }
       .sidebar ul li a.current {
-        color: #15203c; }
+        color: #15203c;
+      background: #D2D1C2;
+    background: rgba(0, 0, 0, 0.07); }
 
 .divider {
   border-top: 1px solid #CCCBB5;
@@ -264,6 +266,10 @@ Enter screen
   cursor:pointer;
 }
 
+.enter .row, .enter .column{
+  overflow:visible;
+}
+
 .enter h2 a{
   color:#fff;
 }
@@ -278,6 +284,13 @@ Enter screen
 
 .enter_crest{
   text-align:center;
+  position:relative;
+  top:-30px;
+}
+
+.enter #logo{
+  position:relative;
+  left:-10px;
 }
 
 .enter #right{

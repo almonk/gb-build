@@ -18,11 +18,23 @@ $(window).resize(function(){
 
 $(window).load(function() {
   centerEnterScreen();
+  
+  if ($.browser.webkit) {
+    $('#enter_crest').animate({
+     opacity: '1',
+     translateY:'+=30'
+   },1500);    
 
-  $('#enter_crest').fadeTo(500, 1, function() {
-    $('#logo').fadeTo(500, 1);
-    $('h2').fadeTo(500, 1);
-  });
+   $('#logo').delay(600).animate({
+     opacity: '1',
+     translateX:'+=10'
+   },800);    
+
+   $('h2').delay(720).animate({
+     opacity: '1'
+   },800);    
+  }
+
   
 });
 

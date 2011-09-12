@@ -32,7 +32,7 @@
             <div class="text">
               <h3><?=$child->title?></h3>
               <h4><?=$child->jobTitle?></h4>
-              <p><?=$child->emailAddress?></p>
+              <p><a href="mailto:<?=$child->emailAddress?>"><?=$child->emailAddress?></a></p>
               <p><?=$child->phone?></p>
             </div>
           </div><!-- End person -->
