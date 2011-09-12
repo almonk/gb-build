@@ -298,7 +298,7 @@ Enter screen
 }
 
 .enter #enter_screen{
-  height: 720px!important;
+  max-height: 720px!important;
 }
 
 /*

@@ -6,7 +6,7 @@ $detect = new Mobile_Detect();
 // The homepage will show the 'enter' screen unless the url
 // has ?home=true appended to the url OR if the the user
 // is on a mobile device
-if (!$input->get->home) {
+if (!$input->get->home && $detect->isMobile() == false) {
   include('./enter.inc');//Show the enter screen
 }else{
   // Start rendering the homepage

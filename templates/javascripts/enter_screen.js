@@ -14,6 +14,11 @@ $(document).ready(function() {
 
 $(window).resize(function(){
   centerEnterScreen();
+  if ($(window).height() < 720 ) {
+    resizeCrest();
+  }else{
+    restoreFullCrest();
+  }
 });
 
 $(window).load(function() {
@@ -22,7 +27,8 @@ $(window).load(function() {
   if ($.browser.webkit) {
     $('#enter_crest').animate({
      opacity: '1',
-     translateY:'+=30'
+     translateY:'+=30',
+     translateZ:'-200'
    },1500);    
 
    $('#logo').delay(600).animate({
@@ -35,7 +41,10 @@ $(window).load(function() {
    },800);    
   }
 
-  
+   if ($.browser.msie) {
+    $('.enter_crest').css({top: '0px'})
+   };
+   
 });
 
 function centerEnterScreen(){
@@ -44,5 +53,14 @@ function centerEnterScreen(){
    top: ($(window).height() - $('.container').height())/2,
    left: ($(window).width() - $('.container').outerWidth())/2
   });
-	
+}
+
+function resizeCrest(){
+  $('#enter_crest').height($(window).height());
+  $('.enter #right').css('marginTop', ($(window).height() / 2) - 60  );
+}
+
+function restoreFullCrest(){
+  $('#enter_crest').height(718);
+  $('.enter #right').css('marginTop', '300px');
 }
