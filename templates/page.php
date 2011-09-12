@@ -1,7 +1,7 @@
 <? include ('./head.inc') ?>
   <div class="container page">
      <div class="row no_mobile">
-       <div class="column grid_12 divider">&nbsp;</div>
+       <div class="column grid_12 divider">&nbsp;</div><br clear="all"/>
      </div>
     
     <div class="row">
