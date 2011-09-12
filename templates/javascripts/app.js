@@ -10,9 +10,12 @@ Cufon.CSS.ready(function() {
 
 $(document).ready(function() {
 	redraw();
+  
   $('.mobile_nav select').change(function() {
     window.location = $(this).val();
   });
+
+  $('.person').biggerlink();
 });
 
 $(window).resize(function() {
