@@ -27,8 +27,8 @@ $(window).load(function() {
   if ($.browser.webkit) {
     $('#enter_crest').animate({
      opacity: '1',
-     translateY:'+=30',
-     translateZ:'-200'
+     translateY:'+30',
+     rotateX: '+=0.10'
    },1500);    
 
    $('#logo').delay(600).animate({

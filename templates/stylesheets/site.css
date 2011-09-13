@@ -285,7 +285,8 @@ Enter screen
 .enter_crest{
   text-align:center;
   position:relative;
-  top:-30px;
+  -webkit-perspective: 428;
+  -webkit-transform:rotateX(45);
 }
 
 .enter #logo{
