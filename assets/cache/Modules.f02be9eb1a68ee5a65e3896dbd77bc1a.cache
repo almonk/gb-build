@@ -1,4 +1,9 @@
 AdminBar/AdminBar.module
+Analytics/Analytics.module
+FieldtypeSelect.module
 Helloworld.module
 ImportPagesCSV.module
+MaintenanceMode.module
+PageEditCheckState3/PageEditCheckState.module
 PageLinkAbstractor.module
+Pdfcomposer/Pdfcomposer.module

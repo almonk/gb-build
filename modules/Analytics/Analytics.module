@@ -1,0 +1,238 @@
+<?php
+
+class Analytics extends Process implements Module, ConfigurableModule {
+
+	public static function getModuleInfo() {
+
+		return array(
+			'title' => 'Analytics', 
+			'version' => 101, 
+			'summary' => 'Analytics in Processwire',
+			'href' => 'http://www.alasdairmonk.com',
+			'singular' => true, 
+			'autoload' => true, 
+			);
+	}
+
+  /**
+	 * Default configuration for our module
+	 *
+	 * The point of putting this in it's own function is so that you don't have to specify
+	 * these defaults more than once.
+	 *
+	 * However, there is no requirement for you to do this (it was just my preferred style).
+	 * If you preferred, you could just check $this->showModal and if it was null, then you
+	 * would know it had not yet been configured (and likewise for the other vars).
+	 *
+	 */
+	static public function getDefaultData() {
+    return array(
+      'username' => '',
+      'password' => '',
+      'profile' => ''
+    );
+	}
+  
+  /**
+  * Populate the default config data
+  *
+  */
+	public function __construct() {
+	   foreach(self::getDefaultData() as $key => $value) {
+		   $this->$key = $value;
+	   }
+	}
+
+  const adminPageName = 'analytics';
+
+  public function init() {
+    parent::init();
+  }
+  
+  /**
+  * Do the main routing for this module 
+  *
+  */
+  public function ___execute($event) {
+    return $this->showOverview();
+	}
+
+  protected function showOverview($event){ 
+    require('lib/gapi.php');
+    $ga = new gapi($this->username, $this->password);
+    
+    $ga->requestReportData(
+      $this->profile,
+      array('source'),
+      array(
+        'pageviews',
+        'visits',
+        'avgTimeOnSite',
+        'pageviewsPerVisit'
+      ),
+      array(
+        '-visits'
+      )
+      ,null,null,null,1,10);
+      
+    $table = $this->modules->get("MarkupAdminDataTable");
+    $table->setEncodeEntities(false);
+    $table->headerRow(
+      array(
+        'Visits this month',
+        'Pageviews this month',
+        'Pageviews per visit',
+        'Avg time on site'
+      )
+    );
+    
+    $table->row(array(
+      '<h3>' . $ga->getVisits() . '</h3>',
+      '<h3>' . $ga->getPageviews() . '</h3>',
+      '<h3>' . $ga->getPageviewsPerVisit() . '</h3>',
+      '<h3>' . $ga->getAvgTimeOnSite() . '</h3>',
+    ));
+
+    $out .= $table->render();
+    
+    $out .= "<h2>All traffic sources</h2>";
+
+    $table = $this->modules->get("MarkupAdminDataTable"); 
+		$table->setEncodeEntities(false); 
+		$table->headerRow(array('Source', 'Visits', 'Pageviews'));
+    
+    foreach($ga->getResults() as $result){
+      $table->row(array(
+        $result,
+        $result->getVisits(),
+        $result->getPageviews()
+      ));
+    }
+
+    $out .= $table->render();
+
+
+    return $out;
+  }
+
+  
+  /**
+  * Module options 
+  *
+  */  
+	static public function getModuleConfigInputfields(array $data) {
+
+		// this is a container for fields, basically like a fieldset
+		$fields = new InputfieldWrapper();
+
+		// since this is a static function, we can't use $this->modules, so get them from the global wire() function
+		$modules = wire('modules');
+
+		// Populate $data with the default config, because if they've never configured this module before,
+		// the $data provided to this function will be empty. Or, if you add new config items in a new version,
+		// $data won't have it until they configure it. Best bet is to merge defaults with custom, where
+		// custom overwrites the defaults (array_merge).
+		$data = array_merge(self::getDefaultData(), $data);
+
+		// username field 
+		$field = $modules->get("InputfieldText");
+		$field->name = "username";
+		$field->label = "Username";
+		$field->description = "Your account username/email address for Google Analytics";
+		$field->attr('value', $data['username']);
+		$fields->add($field);
+
+    // password field
+		$field = $modules->get("InputfieldText");
+		$field->name = "password";
+		$field->label = "Password";
+    $field->attr('value', $data['password']);
+		$field->attr('type', 'password');
+		$fields->add($field);
+    
+    // profile id field 
+    $field = $modules->get("InputfieldSelect");
+    $field->name = "profile";
+    $field->label = "Profile";
+
+    require('lib/gapi.php');
+    try{
+      $ga = new gapi($data['username'], $data['password']);
+      $ga->requestAccountData();
+
+      foreach($ga->getResults() as $result)
+      {
+        $field->addOption($result->getProfileId(), $result);
+      }
+    }catch(Exception $e){
+    }
+
+      $fields->add($field);
+    
+		return $fields;
+	}
+
+   
+  /**
+  * Install the module and create the page where it lives
+  *
+  */
+	public function ___install() {
+
+		if(ProcessWire::versionMajor == 2 && ProcessWire::versionMinor < 1) {
+			throw new WireException("This module requires ProcessWire 2.1 or newer"); 
+		}
+
+		$page = $this->getInstalledPage();
+		$this->message("Installed to {$page->path}"); 
+	}
+
+	/**
+	 * Return the page that this Process is installed on 
+	 *
+	 */
+	protected function getInstalledPage() {
+
+		$admin = $this->pages->get($this->config->adminRootPageID); 
+		$parent = $admin; 
+		if(!$parent->id) $parent = $admin;
+		$page = $parent->child("name=" . self::adminPageName); 
+
+		if(!$page->id) { 
+			$page = new Page();
+			$page->parent = $parent; 
+			$page->template = 'admin';
+			$page->name = self::adminPageName; 
+			$page->title = "Analytics";
+			$page->process = $this; 
+			$page->sort = $parent->numChildren;
+			$page->save();
+		}
+
+		return $page; 	
+	}
+
+	/**
+	 * Uninstall the module
+	 *
+	 */
+	public function ___uninstall() {
+		$page = $this->getInstalledPage();	
+		if($page->id) { 
+			$this->message("Removed {$page->path}");
+			$this->pages->delete($page); 
+		}
+	}
+
+  /**
+	 * Add a submit button, moved to a function so we don't have to do this twice
+	 *
+	 */
+	protected function addSubmit(InputfieldForm $form, $value = 'Submit') {
+		$f = $this->modules->get("InputfieldSubmit"); 
+		$f->name = 'submit';
+		$f->value = $value; 
+		$form->add($f); 
+	}
+
+}

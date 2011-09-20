@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * Select Fieldtype
+ *
+ * This Fieldtype stores a list of values from which to choose via a <select> input field (AKA "Drop Down").
+ *
+ * For documentation about the fields used in this class, please see:
+ * /wire/core/Fieldtype.php
+ *
+ * Module by Hani AbuGhazaleh
+ * http://www.mmbarn.com
+ *
+ * ProcessWire 2.x
+ * Copyright (C) 2010 by Ryan Cramer
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ *
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+
+class FieldtypeSelect extends Fieldtype {
+
+     /**
+      * The default options to load when adding a field of this Fieldtype
+      *
+      * These default values will only appear when adding a new field from Setup > Fields
+      * You will have the option to edit this list of options when configuring the field.
+      * Typically, you won't need to define anything here, but I included the ability just in case someone
+      *    has something specific they're trying to do.
+      *    Example: array ('Excellent','Good','Fair','Poor')
+      */
+     public static $defaultOptionValues = array ();
+
+     public static function getModuleInfo() {
+	  return array(
+	  'title' => 'Select (AKA Drop Down)',
+	  'version' => 100,
+	  'summary' => 'This Fieldtype stores a list of values from which to choose via a "select" input field.'
+	  );
+     }
+
+     public function getInputfield(Page $page, Field $field) {
+
+	  $inputfield = $this->modules->get('InputfieldSelect');
+	  $inputfield->attr('name', $field->name);
+	  $inputfield->class = $this->className();
+	  $options = explode("\n",$field->select_options);
+	  foreach($options as $option) {
+	       if (trim($option) != '') {
+		    $inputfield->addOption((string) $option);
+	       }
+	  }
+	  return $inputfield;
+     }
+
+     public function getDatabaseSchema(Field $field) {
+	  $schema = parent::getDatabaseSchema($field);
+	  $schema['data'] = 'text NOT NULL';
+	  $schema['keys']['data_exact'] = 'KEY `data_exact` (`data`(255))';
+	  $schema['keys']['data'] = 'FULLTEXT KEY `data` (`data`)';
+
+	  return $schema;
+     }
+
+     public function sanitizeValue(Page $page, Field $field, $value) {
+	  return $value;
+     }
+
+     public function ___getConfigInputfields(Field $field) {
+
+	  $inputfields = parent::___getConfigInputfields($field);
+	  $f = $this->modules->get("InputfieldTextarea");
+	  $f->label = "Select Options";
+	  $f->attr('name', 'select_options');
+	  $f->attr('value', count($field->select_options) > 0 ? $field->select_options : implode("\r\n",self::$defaultOptionValues));
+	  $f->attr('rows', 5);
+	  $f->description = "The list of options that are available for this drop down";
+	  $f->notes = "Each option should be typed on it's own line.";
+	  $inputfields->append($f);
+	  return $inputfields;
+     }
+
+}

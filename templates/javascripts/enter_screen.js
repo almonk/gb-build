@@ -29,14 +29,14 @@ $(window).load(function() {
      opacity: '1',
      translateY:'+30',
      rotateX: '+=0.10'
-   },1500);    
+   },2100);    
 
-   $('#logo').delay(600).animate({
+   $('#logo').delay(900).animate({
      opacity: '1',
      translateX:'+=10'
    },800);    
 
-   $('h2').delay(720).animate({
+   $('h2').delay(990).animate({
      opacity: '1'
    },800);    
   }

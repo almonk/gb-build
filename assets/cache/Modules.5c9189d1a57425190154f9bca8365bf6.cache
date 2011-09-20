@@ -67,7 +67,6 @@ Process/ProcessForgotPassword.module
 Process/ProcessHome.module
 Process/ProcessList.module
 Process/ProcessLogin/ProcessLogin.module
-Process/ProcessLogout/ProcessLogout.module
 Process/ProcessModule/ProcessModule.module
 Process/ProcessPageAdd/ProcessPageAdd.module
 Process/ProcessPageEdit/ProcessPageEdit.module
